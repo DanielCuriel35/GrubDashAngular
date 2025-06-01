@@ -1,0 +1,33 @@
+<div class="container my-5" *ngIf="usuario != undefined">
+  <div class="row justify-content-center" *ngIf="productos.length > 0; else carritoVacio">
+    <div class="col-md-8 mb-4" *ngFor="let producto of productos">
+      <div class="card p-3 d-flex flex-row align-items-center">
+        <img [src]="producto.img" alt="Producto" class="img-fluid" style="max-width: 120px;">
+        <div class="ms-3 flex-grow-1">
+          <h5 class="fw-bold">{{ producto.nombre }}</h5>
+          <p class="mb-1">Precio: ${{ producto.precio_unitario }}</p>
+          <div class="input-group w-50">
+            <span class="input-group-text">Cantidad</span>
+            <input type="number" class="form-control" [(ngModel)]="producto.cantidad" min="1" (change)="calcularTotal()">
+          </div>
+        </div>
+        <button class="btn btn-danger ms-3" (click)="eliminarProducto(producto.id)">Eliminar</button>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card p-4">
+        <h4 class="fw-bold">Total: ${{ total.toFixed(2) }}</h4>
+        <button class="btn btn-success w-100 mt-3 fs-5">Proceder al Pago</button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #carritoVacio>
+    <p class="fs-5 text-center">Tu carrito está vacío.</p>
+  </ng-template>
+</div>
+
+<div *ngIf="usuario == undefined" class="d-flex flex-column justify-content-center align-items-center vh-100">
+  <p class="fs-4 mb-3">No has iniciado sesión.</p>
+  <a class="btn btn-primary btn-lg" routerLink="/login">Iniciar sesión</a>
+</div>

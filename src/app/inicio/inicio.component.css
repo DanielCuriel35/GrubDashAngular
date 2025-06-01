@@ -1,0 +1,22 @@
+
+.card{
+  background-color: #b8a1e6 !important;
+  border: #4B0082 1px solid !important;
+}
+body{
+  background-color: #d9c2e9!important;
+}
+.btn-morado {
+  background-color:  #4a0072;
+  color: #d1b3ff;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-morado:hover {
+  background-color: #270263;
+  color: white;
+}

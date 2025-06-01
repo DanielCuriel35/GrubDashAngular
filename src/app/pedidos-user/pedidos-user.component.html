@@ -1,0 +1,40 @@
+<div class="container"  *ngIf="usuario!=undefined">
+  <div class="row">
+    <div *ngFor="let pedido of pedidos" class="col-12 col-md-6 mt-4">
+      <div class="card shadow mb-4">
+        <div class="card-body">
+          <h4 class="card-title mb-3">Pedido #{{ pedido.id }}</h4>
+          <p><strong>Fecha:</strong> {{ pedido.fecha_pedido | date:'medium' }}</p>
+          <p><strong>Estado:</strong> {{ pedido.estado }}</p>
+          <p>
+            <strong>Restaurante:</strong>
+            {{ pedido.restaurante.nombre }}
+          </p>
+          <hr>
+          <h5>Productos:</h5>
+          <ul class="list-group">
+            <li *ngFor="let producto of pedido.productos"
+              class="list-group-item d-flex justify-content-between align-items-center">
+              <a [routerLink]="['/producto', producto.id]">
+                {{ producto.nombre }}
+                <br>
+                <small>Cantidad: {{ producto.cantidad }}</small>
+              </a>
+              <span class="badge bg-primary rounded-pill">${{ producto.precio_unitario | number:'1.2-2' }}</span>
+            </li>
+          </ul>
+          <hr>
+          <div class="d-flex justify-content-end mt-3">
+            <span class="badge bg-success rounded-pill fs-5 px-4 py-2">
+              Total: ${{ getTotalPedido(pedido) | number:'1.2-2' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="usuario==undefined" class="d-flex flex-column justify-content-center align-items-center vh-100">
+  <p class="fs-4 mb-3">No has iniciado sesión.</p>
+  <a class="btn btn-primary btn-lg" routerLink="/login">Iniciar sesión</a>
+</div>

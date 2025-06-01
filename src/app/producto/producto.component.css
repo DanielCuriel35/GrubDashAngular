@@ -1,0 +1,23 @@
+nav{
+  background-color: #4B0082 !important;
+}
+.logo{
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+}
+img{
+  height: 200px;
+  width: auto;
+  margin-bottom: 10px;
+}
+body{
+  background-color: #d9c2e9!important;
+}
+.cardProducto{
+  background-color: #9d84ae!important;
+}
+.ingrediente{
+  background-color: #735f81!important;
+  border: #4B0082 1px solid!important;
+}

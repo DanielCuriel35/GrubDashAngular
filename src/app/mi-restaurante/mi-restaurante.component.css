@@ -1,0 +1,118 @@
+nav{
+  background-color: #4B0082 !important;
+}
+.logo{
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+}
+body{
+  background-color: #d9c2e9!important;
+}
+
+.nuevo-restaurante {
+  border: 2px dashed #a66cff;
+  padding: 40px;
+  text-align: center;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nuevo-restaurante:hover {
+  background-color: #f5f0ff;
+}
+
+.icono {
+  font-size: 48px;
+  color: #a66cff;
+}
+
+.texto {
+  margin-top: 12px;
+  font-size: 16px;
+  color: #5b2ecc;
+  font-weight: 500;
+}
+
+.modal-fondo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-formulario {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+}
+
+.modal-formulario h3 {
+  margin-top: 0;
+  color: #5b2ecc;
+}
+
+.modal-formulario input,
+.modal-formulario textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.modal-formulario .acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-formulario button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #a66cff;
+  color: white;
+  cursor: pointer;
+}
+
+
+
+.ingredientes-con-boton {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.select-ingredientes {
+  flex: 1;
+}
+
+.boton-crear-ing {
+  padding: 8px 12px;
+  background-color: #a66cff !important;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  height: 40px;
+}
+
+.boton-crear-ing:hover {
+  background-color: #8b54e4;
+}
+
+.modal-formulario button[type="button"] {
+  background-color: #ccc;
+}

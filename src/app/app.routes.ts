@@ -1,0 +1,30 @@
+import { Routes } from '@angular/router';
+import { InicioComponent } from './inicio/inicio.component';
+import { RegistroComponent } from './registro/registro.component';
+import { LoginComponent } from './login/login.component';
+import { ProductoComponent } from './producto/producto.component';
+import { RestauranteComponent } from './restaurante/restaurante.component';
+import { RestaurantesComponent } from './restaurantes/restaurantes.component';
+import { CarritoComponent } from './carrito/carrito.component';
+import { MisRestaurantesComponent } from './mis-restaurantes/mis-restaurantes.component';
+import { MiRestauranteComponent } from './mi-restaurante/mi-restaurante.component';
+import { PedidosUserComponent } from './pedidos-user/pedidos-user.component';
+import { PedidoRestComponent } from './pedido-rest/pedido-rest.component';
+import { PerfilComponent } from './perfil/perfil.component';
+import { MiProductoComponent } from './mi-producto/mi-producto.component';
+
+export const routes: Routes = [
+  { path: '', component: InicioComponent },
+  { path: 'registro', component: RegistroComponent },
+  { path: 'login', component: LoginComponent},
+  { path: 'producto/:producto_id', component: ProductoComponent },
+  { path: 'restaurante/:usuario_id/:nombreLocal', component: RestauranteComponent },
+  { path: 'mRestaurante/:usuario_id/:nombreLocal', component: MiRestauranteComponent },
+  { path: 'restaurantes', component: RestaurantesComponent },
+  { path: 'carrito', component: CarritoComponent },
+  { path: 'mRestaurantes', component: MisRestaurantesComponent },
+  { path: 'pedidosUser', component: PedidosUserComponent },
+  { path: 'pedidosRest', component: PedidoRestComponent },
+  { path: 'perfil', component: PerfilComponent },
+  { path: 'mProducto/:id', component: MiProductoComponent }
+];

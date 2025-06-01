@@ -1,0 +1,23 @@
+<div class="container mt-5" *ngIf="usuario.id!=undefined">
+  <h1 class="text-center mb-5">{{local}}</h1>
+  <div class="row">
+    <div *ngFor="let producto of productos" class="col-12 col-md-6 col-lg-3 mb-4">
+      <a [routerLink]="['/producto', producto.id]" class="text-decoration-none">
+        <div class="card h-100">
+          <img [src]="producto.img" class="card-img-top" [alt]="producto.nombreProducto">
+          <div class="card-body">
+            <h5 class="card-title">{{ producto.nombreProducto }}</h5>
+            <p class="card-text">{{ producto.descripcion }}</p>
+            <p class="card-text">Precio: {{ producto.precio }} €</p>
+            <p class="card-text">Tiempo prep: {{ producto.tiempoPreparacion }}</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+<div *ngIf="usuario.username==undefined">
+  <p>No has iniciado sesión.</p>
+  <a routerLink="/login">Iniciar sesión</a>
+</div>
+

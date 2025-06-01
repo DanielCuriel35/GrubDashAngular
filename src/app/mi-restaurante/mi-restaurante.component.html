@@ -1,0 +1,76 @@
+<div class="container mt-5">
+  <h1 class="text-center mb-5">{{local}}</h1>
+  <div class="row">
+    <div *ngFor="let producto of productos" class="col-12 col-md-6 col-lg-3 mb-4">
+      <a [routerLink]="['/mProducto', producto.id]" class="text-decoration-none">
+        <div class="card h-100">
+          <img [src]="producto.img" class="card-img-top" [alt]="producto.nombreProducto">
+          <div class="card-body">
+            <h5 class="card-title">{{ producto.nombreProducto }}</h5>
+            <p class="card-text">{{ producto.descripcion }}</p>
+            <p class="card-text">Precio: {{ producto.precio }} €</p>
+            <p class="card-text">Tiempo prep: {{ producto.tiempoPreparacion }}</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="nuevo-restaurante" (click)="mostrarFormulario = true">
+        <i class="bi bi-plus-lg icono"></i>
+        <p class="texto">Crear nuevo producto</p>
+      </div>
+    </div>
+
+    <div class="modal-fondo" *ngIf="mostrarFormulario" (click)="cerrarModal($event)">
+      <div class="modal-formulario" (click)="$event.stopPropagation()">
+        <h3>Nuevo Producto</h3>
+        <form (ngSubmit)="crearProducto()" #form="ngForm">
+          <input type="text" name="nombreProducto" [(ngModel)]="formData.nombreProducto"
+            placeholder="Nombre del producto" required />
+
+          <input type="file" name="img" [(ngModel)]="formData.img" placeholder="URL de la imagen" required (change)="imgSel($event)"/>
+
+          <input type="text" name="precio" [(ngModel)]="formData.precio" placeholder="Precio" required />
+
+          <textarea name="descripcion" [(ngModel)]="formData.descripcion" placeholder="Descripción" required></textarea>
+
+          <input type="text" name="tiempoPreparacion" [(ngModel)]="formData.tiempoPreparacion"
+            placeholder="Tiempo de preparación" required />
+
+          <div class="ingredientes-con-boton">
+            <div class="select-ingredientes">
+              <label for="ingredientes">Ingredientes</label>
+              <select name="ingredientes" id="ingredientes" [(ngModel)]="formData.ingredientes" multiple required>
+                <option *ngFor="let ingrediente of ingredientesDisponibles" [ngValue]="ingrediente">
+                  {{ ingrediente.nombre }}
+                </option>
+              </select>
+            </div>
+            <button type="button" (click)="mostrarModalIngrediente = true" class="boton-crear-ing">Crear
+              ingrediente</button>
+          </div>
+
+          <div class="acciones">
+            <button type="submit">Crear</button>
+            <button type="button" (click)="mostrarFormulario = false">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-fondo" *ngIf="mostrarModalIngrediente" (click)="cerrarModalIngrediente($event)">
+      <div class="modal-formulario" (click)="$event.stopPropagation()">
+        <h3>Nuevo Ingrediente</h3>
+        <form #ingredienteForm="ngForm">
+          <input type="text" name="nombre" [(ngModel)]="nuevoIngrediente.nombre" placeholder="Nombre" required />
+          <textarea name="descripcion" [(ngModel)]="nuevoIngrediente.descripcion" placeholder="Descripción"
+            required></textarea>
+          <div class="acciones">
+            <button type="submit" (click)="crearIngrediente()">Guardar</button>
+            <button type="button" (click)="mostrarModalIngrediente = false">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

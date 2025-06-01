@@ -1,0 +1,23 @@
+<div class="container text-center">
+  <div class="form-container">
+    <img src="img/Logo editado.png" class="imagen" />
+    <p class="title">Bienvenido otra vez</p>
+
+    <form class="form" (ngSubmit)="login()">
+      <input type="email" class="input" placeholder="Email" [(ngModel)]="email" name="email" required />
+      <div class="contraseña">
+        <input [type]="showPassword ? 'text' : 'password'" class="input" placeholder="Password" [(ngModel)]="password"
+          name="password" required />
+        <button type="button" (click)="togglePasswordVisibility()">
+          <i class="bi" [class.bi-eye]="!showPassword" [class.bi-eye-slash]="showPassword"></i>
+        </button>
+      </div>
+      <button type="submit" class="form-btn">Log in</button>
+    </form>
+
+    <p class="sign-up-label">
+      ¿No estás registrado?
+      <a routerLink="/registro" class="sign-up-link">Hazlo aquí</a>
+    </p>
+  </div>
+</div>

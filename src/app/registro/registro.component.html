@@ -1,0 +1,29 @@
+<div class="container text-center">
+  <div class="form-container">
+    <img src="img/Logo editado.png" class="imagen">
+    <p class="title">Registrate aquí </p>
+    <form class="form" (ngSubmit)="onSubmit()" #formulario="ngForm">
+  <input type="text" class="input" placeholder="Nombre" [(ngModel)]="usuario.nombre" name="nombre" required />
+  <input type="text" class="input" placeholder="Apellidos" [(ngModel)]="usuario.apellido" name="apellido" required />
+  <input type="date" class="input" placeholder="Fecha de nacimiento" [(ngModel)]="usuario.fecha_nac" name="fecha_nac" required />
+  <input type="text" class="input" placeholder="Nombre de usuario" [(ngModel)]="usuario.username" name="user" required />
+  <input type="text" class="input" placeholder="Localidad" [(ngModel)]="usuario.localidad" name="localidad" required />
+  <input type="text" class="input" placeholder="Calle/N/Piso/Letra" [(ngModel)]="usuario.direccion" name="direccion" required />
+  <input type="email" class="input" placeholder="Email" [(ngModel)]="usuario.email" name="email" required />
+  <input type="password" class="input" placeholder="Password" [(ngModel)]="usuario.password" name="password" required />
+
+  <div style="text-align: left; margin: 10px 0;">
+    <label style="display: flex; align-items: center; gap: 5px;">
+      <input type="checkbox" [(ngModel)]="usuario.restaurante" name="restaurante" />
+      Soy un restaurante
+    </label>
+  </div>
+
+  <button class="form-btn" type="submit">Registro</button>
+</form>
+    <p class="sign-up-label">
+      ¿Ya estas registrado?
+      <a routerLink="/login" class="sign-up-link">Accede aquí</a>
+    </p>
+  </div>
+</div>

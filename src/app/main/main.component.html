@@ -1,0 +1,61 @@
+@if (mostrarNav == true) {
+<nav class="navbar navbar-expand-md sticky-top" aria-label="Ninth navbar example" data-bs-theme="dark">
+  <div class="container-xl">
+    <a class="navbar-brand" href="#">
+      <span><img src="./img/Logo editado.png" class="logo"></span> GrubDash
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample07XL"
+      aria-controls="navbarsExample07XL" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExample07XL">
+      <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+        </li>
+
+        <li class="nav-item" *ngIf="!usuario.username">
+          <a class="nav-link" routerLink="/registro" routerLinkActive="active">Registro</a>
+        </li>
+
+        <li class="nav-item" *ngIf="!usuario.username">
+          <a class="nav-link" routerLink="/login" routerLinkActive="active">Log in</a>
+        </li>
+
+        <li class="nav-item" *ngIf="!usuario.restaurante || !usuario.username">
+          <a class="nav-link" routerLink="/restaurantes" routerLinkActive="active">Restaurantes</a>
+        </li>
+
+        <li class="nav-item">
+          <a *ngIf="!usuario.restaurante || !usuario.username" class="nav-link" routerLink="/pedidosUser"
+            routerLinkActive="active">Pedidos</a>
+        </li>
+
+        <li class="nav-item" *ngIf="usuario.restaurante">
+          <a class="nav-link" routerLink="/pedidosRest" routerLinkActive="active">Pedidos</a>
+        </li>
+
+        <li class="nav-item" *ngIf="!usuario.restaurante || !usuario.username">
+          <a class="nav-link" routerLink="/carrito" routerLinkActive="active">Carrito</a>
+        </li>
+
+        <li class="nav-item" *ngIf="usuario.restaurante">
+          <a class="nav-link" routerLink="/mRestaurantes" routerLinkActive="active">Mi restaurante</a>
+        </li>
+
+        <li class="nav-item" *ngIf="usuario.username">
+          <button class="nav-link" (click)="logout()">Log out</button>
+        </li>
+
+        <li class="nav-item" *ngIf="usuario.username">
+          <a class="nav-link" routerLink="/perfil" routerLinkActive="active"><i class="bi bi-person-circle"></i>{{usuario.username}}</a>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</nav>
+}
+<router-outlet></router-outlet>

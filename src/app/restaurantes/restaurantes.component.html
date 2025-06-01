@@ -1,0 +1,33 @@
+<div class="container" *ngIf="usuario!=undefined">
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-4 mt-5">
+      <div *ngFor="let r of restaurantes" class="card shadow mb-4">
+        <div class="card-body text-center">
+          <a [routerLink]="['/restaurante', r.usuario_id, r.nombreLocal]" class="text-decoration-none">
+            <h2 class="card-title fw-bold mb-4">{{ r.nombreLocal }}</h2>
+            <img [src]="r.img" class="img-fluid rounded mb-4 imgRestaurante" alt="{{ r.nombreLocal }}">
+          </a>
+          <div class="mb-3">
+         <a [href]="'https://maps.google.com/?q=' + r.ubicacion" target="_blank"
+              class="text-decoration-none">
+              <span class="text-primary">
+                <i class="bi bi-geo-alt-fill"></i>
+                {{ r.ubicacion }}
+              </span>
+            </a>
+          </div>
+          <p class="card-text mb-3">
+            {{ r.descripcion }}
+          </p>
+          <p class="card-text">
+            <strong>Rango de precio por persona:</strong> {{ r.precioMedio }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="usuario==undefined" class="d-flex flex-column justify-content-center align-items-center vh-100">
+  <p class="fs-4 mb-3">No has iniciado sesión.</p>
+  <a class="btn btn-primary btn-lg" routerLink="/login">Iniciar sesión</a>
+</div>

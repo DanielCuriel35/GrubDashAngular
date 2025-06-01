@@ -1,0 +1,24 @@
+body {
+  background-color: #d9c2e9 !important;
+}
+
+.card {
+  border-radius: 1rem;
+}
+
+.card-title {
+  color: #4b0082;
+}
+
+.list-group-item {
+  background-color: #f8f9fa;
+  border: none;
+}
+
+.badge {
+  font-size: 1rem;
+}
+
+a{
+  text-decoration: none;
+}

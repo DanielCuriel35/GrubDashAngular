@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12 mt-5 mb-5">
+      <div *ngFor="let r of restaurantes" class="card shadow mb-4">
+        <div class="card-body text-center">
+          <a [routerLink]="['/mRestaurante', r.id, r.nombreLocal]" class="text-decoration-none">
+            <h2 class="card-title fw-bold mb-4">{{ r.nombreLocal }}</h2>
+            <img [src]="r.img" class="img-fluid rounded mb-4 imgRestaurante" alt="{{ r.nombreLocal }}">
+          </a>
+          <div class="mb-3">
+            <a [href]="'https://maps.google.com/?q=' + r.ubicacion" target="_blank" class="text-decoration-none">
+              <span class="text-primary">
+                <i class="bi bi-geo-alt-fill"></i>
+                {{ r.ubicacion }}
+              </span>
+            </a>
+          </div>
+          <p class="card-text mb-3">
+            {{ r.descripcion }}
+          </p>
+          <p class="card-text">
+            <strong>Rango de precio por persona:</strong> {{ r.precioMedio }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4 mt-5" *ngIf="restaurantes.length<1">
+      <div class="nuevo-restaurante" (click)="mostrarFormulario = true">
+        <i class="bi bi-plus-lg icono"></i>
+        <p class="texto">Crear nuevo restaurante</p>
+      </div>
+    </div>
+
+    <div class="modal-fondo" *ngIf="mostrarFormulario" (click)="cerrarModal($event)">
+      <div class="modal-formulario" (click)="$event.stopPropagation()">
+        <h3>Nuevo Restaurante</h3>
+        <form (ngSubmit)="crearRestaurante()" #form="ngForm">
+          <input type="text" name="nombreLocal" [(ngModel)]="formData.nombreLocal" placeholder="Nombre del local"
+            required />
+          <input type="file" name="img" placeholder="URL de la imagen" required (change)="imgSel($event)" />
+          <input type="text" name="precioMedio" [(ngModel)]="formData.precioMedio" placeholder="Precio medio"
+            required />
+          <textarea name="descripcion" [(ngModel)]="formData.descripcion" placeholder="Descripción" required></textarea>
+          <input type="text" name="localidad" [(ngModel)]="formData.localidad" placeholder="Localidad" required />
+          <input type="text" name="ubicacion" [(ngModel)]="formData.ubicacion" placeholder="Ubicación" required />
+
+          <div class="acciones">
+            <button type="submit">Crear</button>
+            <button type="button" (click)="mostrarFormulario = false">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
