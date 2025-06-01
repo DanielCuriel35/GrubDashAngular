@@ -46,7 +46,7 @@ export class CarritoComponent implements OnInit {
   productos: Producto[] = [];
   total: number = 0;
 
-  private apiUrl = 'http://localhost/Apis/GrubDashApi/public/api/pedidosC';
+  private apiUrl = 'https://grubdashapi-production.up.railway.app/api/pedidosC';
 
   constructor(private http: HttpClient) { }
 

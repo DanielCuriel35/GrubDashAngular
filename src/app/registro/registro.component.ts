@@ -26,7 +26,7 @@ export class RegistroComponent{
   private http = inject(HttpClient);
   private router = inject(Router);
   onSubmit() {
-    this.http.post('http://localhost/Apis/GrubDashApi/public/api/registro', this.usuario).subscribe({
+    this.http.post('https://grubdashapi-production.up.railway.app/api/registro', this.usuario).subscribe({
       next: (res: any) => {
         console.log('Registro exitoso:', res);
         alert('¡Registro exitoso!');

@@ -35,7 +35,7 @@ export class MisRestaurantesComponent {
       this.id = this.usuario.id
     }
 
-    this.http.get<Restaurante[]>('http://localhost/Apis/GrubDashApi/public/api/restaurantesU/' + this.id)
+    this.http.get<Restaurante[]>('https://grubdashapi-production.up.railway.app/api/restaurantesU/' + this.id)
       .subscribe({
         next: (data) => this.restaurantes = data,
         error: (err) => console.error('Error al cargar restaurantes', err)
@@ -62,7 +62,7 @@ export class MisRestaurantesComponent {
       formDataToSend.append('img',this.imagenSeleccionada);
     }
 
-    this.http.post(`http://localhost/Apis/GrubDashApi/public/api/restaurante`, formDataToSend).subscribe({
+    this.http.post(`https://grubdashapi-production.up.railway.app/api/restaurante`, formDataToSend).subscribe({
       next: (res) => {
         console.log('Restaurante creado:', res);
         this.mostrarFormulario = false;

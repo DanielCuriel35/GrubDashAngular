@@ -25,7 +25,7 @@ export class PerfilComponent implements OnInit {
 
   }
   actualizarUsuario(): void {
-    this.http.put(`http://localhost/Apis/GrubDashApi/public/api/usuario/${this.usuario.id}`, this.usuario)
+    this.http.put(`https://grubdashapi-production.up.railway.app/api/usuario/${this.usuario.id}`, this.usuario)
       .subscribe({
         next: (res: any) => {
           alert('Datos actualizados con éxito');
@@ -58,7 +58,7 @@ export class PerfilComponent implements OnInit {
   }
   console.log(this.imagenSeleccionada);
 
-  this.http.post(`http://localhost/Apis/GrubDashApi/public/api/restaurantesUpdate/${this.restaurante.id}`, formData)
+  this.http.post(`https://grubdashapi-production.up.railway.app/api/restaurantesUpdate/${this.restaurante.id}`, formData)
     .subscribe({
       next: (res) => {
         alert('Restaurante actualizado con éxito');

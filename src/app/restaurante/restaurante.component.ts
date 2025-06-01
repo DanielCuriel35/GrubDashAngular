@@ -27,7 +27,7 @@ export class RestauranteComponent {
     this.idRestaurante = this.route.snapshot.paramMap.get('usuario_id')!;
     this.local = this.route.snapshot.paramMap.get('nombreLocal')!;
 
-    this.http.get<Producto[]>(`http://localhost/Apis/GrubDashApi/public/api/productos/${this.idRestaurante}`)
+    this.http.get<Producto[]>(`https://grubdashapi-production.up.railway.app/api/productos/${this.idRestaurante}`)
       .subscribe({
         next: (data) => this.productos = data,
         error: (err) => console.error('Error al cargar productos', err)

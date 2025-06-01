@@ -21,7 +21,7 @@ export class RestaurantesComponent implements OnInit {
       this.localidad=this.usuario.localidad
     }
 
-    this.http.get<Restaurante[]>('http://localhost/Apis/GrubDashApi/public/api/restaurantes/'+this.localidad)
+    this.http.get<Restaurante[]>('https://grubdashapi-production.up.railway.app/api/restaurantes/'+this.localidad)
       .subscribe({
         next: (data) => this.restaurantes = data,
         error: (err) => console.error('Error al cargar restaurantes', err)

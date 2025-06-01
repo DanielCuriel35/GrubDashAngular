@@ -22,7 +22,7 @@ export class LoginComponent {
   private http = inject(HttpClient);
   private main = inject(MainComponent)
   login() {
-    this.http.post('http://localhost/Apis/GrubDashApi/public/api/login', {
+    this.http.post('https://grubdashapi-production.up.railway.app/api/login', {
       email: this.email,
       password: this.password
     }).subscribe({

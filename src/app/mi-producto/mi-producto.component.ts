@@ -27,7 +27,7 @@ export class MiProductoComponent implements OnInit {
   }
 
   cargarProducto(id: number) {
-    this.http.get<Producto>(`http://localhost/Apis/GrubDashApi/public/api/Dproducto/${id}`)
+    this.http.get<Producto>(`https://grubdashapi-production.up.railway.app/api/Dproducto/${id}`)
       .subscribe({
         next: (data) => {
           this.producto = data;
@@ -52,7 +52,7 @@ export class MiProductoComponent implements OnInit {
         formData.append('img', this.imagen);
       }
 
-      this.http.post(`http://localhost/Apis/GrubDashApi/public/api/productosUpdate/${this.producto.id}`, formData)
+      this.http.post(`https://grubdashapi-production.up.railway.app/api/productosUpdate/${this.producto.id}`, formData)
         .subscribe({
           next: (res) => {
             alert('Producto actualizado con éxito');

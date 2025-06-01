@@ -20,7 +20,7 @@ export class ProductoComponent {
     this.usuario = this.recuperarUsuario()
     this.idProducto = this.route.snapshot.paramMap.get('producto_id')!;
 
-    this.http.get<Producto>(`http://localhost/Apis/GrubDashApi/public/api/Dproducto/${this.idProducto}`)
+    this.http.get<Producto>(`https://grubdashapi-production.up.railway.app/api/Dproducto/${this.idProducto}`)
       .subscribe({
         next: (data) => {
           this.producto = data
@@ -33,7 +33,7 @@ export class ProductoComponent {
   aniadirProducto() {
 
 
-  const url = 'http://localhost/Apis/GrubDashApi/public/api/pedido';
+  const url = 'https://grubdashapi-production.up.railway.app/api/pedido';
 
   const data = {
     producto_id: this.producto.id,

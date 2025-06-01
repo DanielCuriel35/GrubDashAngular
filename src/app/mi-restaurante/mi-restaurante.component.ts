@@ -44,12 +44,12 @@ export class MiRestauranteComponent {
   ngOnInit(): void {
     this.idRestaurante = this.route.snapshot.paramMap.get('usuario_id')!;
     this.local = this.route.snapshot.paramMap.get('nombreLocal')!;
-    this.http.get<Ingrediente[]>(`http://localhost/Apis/GrubDashApi/public/api/ingredientes`)
+    this.http.get<Ingrediente[]>(`https://grubdashapi-production.up.railway.app/api/ingredientes`)
       .subscribe({
         next: (data) => this.ingredientesDisponibles = data,
         error: (err) => console.error('Error al cargar ingredientes', err)
       });
-    this.http.get<Producto[]>(`http://localhost/Apis/GrubDashApi/public/api/productos/${this.idRestaurante}`)
+    this.http.get<Producto[]>(`https://grubdashapi-production.up.railway.app/api/productos/${this.idRestaurante}`)
       .subscribe({
         next: (data) => this.productos = data,
         error: (err) => console.error('Error al cargar productos', err)
@@ -75,7 +75,7 @@ export class MiRestauranteComponent {
     formDataToSend.append(`ingredientes[${index}]`, ingrediente.id.toString());
   });
 
-  this.http.post(`http://localhost/Apis/GrubDashApi/public/api/producto`, formDataToSend).subscribe({
+  this.http.post(`https://grubdashapi-production.up.railway.app/api/producto`, formDataToSend).subscribe({
     next: (res) => {
       console.log('Producto creado:', res);
       this.ngOnInit();
@@ -92,7 +92,7 @@ export class MiRestauranteComponent {
   }
 
   crearIngrediente(): void {
-    this.http.post<{ message: string, data: Ingrediente }>(`http://localhost/Apis/GrubDashApi/public/api/ingrediente`, this.nuevoIngrediente)
+    this.http.post<{ message: string, data: Ingrediente }>(`https://grubdashapi-production.up.railway.app/api/ingrediente`, this.nuevoIngrediente)
       .subscribe({
         next: (res) => {
           console.log('Ingrediente creado:', res.data);
