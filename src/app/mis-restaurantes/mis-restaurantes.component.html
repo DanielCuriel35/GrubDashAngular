@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="usuario!=undefined">
   <div class="row">
     <div class="col-12 mt-5 mb-5">
       <div *ngFor="let r of restaurantes" class="card shadow mb-4">
@@ -54,4 +54,9 @@
     </div>
 
   </div>
+</div>
+
+<div *ngIf="usuario==undefined" class="d-flex flex-column justify-content-center align-items-center vh-100">
+  <p class="fs-4 mb-3">No has iniciado sesión.</p>
+  <a class="btn btn-primary btn-lg" routerLink="/login">Iniciar sesión</a>
 </div>

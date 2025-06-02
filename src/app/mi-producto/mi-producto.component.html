@@ -65,6 +65,9 @@
     <button type="submit" class="btn btn-primary" [disabled]="formProducto.invalid">
       Guardar Cambios
     </button>
+    <button type="button" (click)="borrarProducto(producto.id)" class="btn btn-danger ms-5" [disabled]="formProducto.invalid">
+      Borrar Producto
+    </button>
   </form>
 </div>
 

@@ -3,6 +3,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
 import { Usuario } from '../usuario.model';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-main',
@@ -22,7 +23,7 @@ export class MainComponent implements OnInit {
     email: '',
     restaurante: false
   };
-  ultimoSegmento !:any;
+  ultimoSegmento !: any;
   ngOnInit(): void {
     if (sessionStorage.getItem('usuario')) {
       this.usuario = this.recuperarUsuario()
@@ -34,15 +35,33 @@ export class MainComponent implements OnInit {
     }
   }
   logout() {
-    sessionStorage.removeItem('usuario');
-    this.router.navigate(['/']);
-    this.ngOnInit()
+    Swal.fire({
+      title: '¿Estás seguro que quieres cerrar sesión?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, cerrar sesión',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        sessionStorage.removeItem('usuario');
+        this.router.navigate(['/']);
+        this.ngOnInit();
+        Swal.fire({
+          icon: 'success',
+          title: 'Sesión cerrada',
+          text: 'Has cerrado sesión correctamente.',
+          timer: 1500,
+          showConfirmButton: false
+        });
+      }
+    });
   }
   recuperarUsuario(): any | null {
     const data = sessionStorage.getItem('usuario');
     return data ? JSON.parse(data) : null;
   }
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
 
 

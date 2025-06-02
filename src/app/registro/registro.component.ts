@@ -1,17 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, inject, OnInit } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-registro',
-  imports: [RouterModule, CommonModule, HttpClientModule,FormsModule],
+  standalone: true,
+  imports: [RouterModule, CommonModule, HttpClientModule, FormsModule],
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css'
 })
-
-export class RegistroComponent{
+export class RegistroComponent {
   usuario = {
     nombre: '',
     apellido: '',
@@ -23,24 +25,52 @@ export class RegistroComponent{
     password: '',
     restaurante: false
   };
-  private http = inject(HttpClient);
+
+  private authService = inject(AuthService);
   private router = inject(Router);
+
   onSubmit() {
-    this.http.post('https://grubdashapi-production.up.railway.app/api/registro', this.usuario).subscribe({
+    this.authService.registrar(this.usuario).subscribe({
       next: (res: any) => {
         console.log('Registro exitoso:', res);
-        alert('¡Registro exitoso!');
+        Swal.fire({
+          icon: 'success',
+          title: '¡Registro exitoso!',
+          timer: 1500,
+          showConfirmButton: false,
+        });
         this.router.navigate(['/login']);
       },
       error: (err) => {
         console.error('Error en el registro:', err);
         if (err.status === 422) {
-          alert('Errores de validación:\n' + JSON.stringify(err.error.errors, null, 2));
+          Swal.fire({
+            icon: 'error',
+            title: 'Errores de validación',
+            html: this.formatearErrores(err.error.errors),
+          });
         } else {
-          alert('Error inesperado al registrar usuario.');
+          Swal.fire({
+            icon: 'error',
+            title: 'Error inesperado',
+            text: 'Error inesperado al registrar usuario.',
+          });
         }
       }
     });
   }
-}
+  private formatearErrores(errores: any): string {
+    let mensaje = '<ul style="text-align:left;">';
+    for (const campo in errores) {
+      if (errores.hasOwnProperty(campo)) {
+        errores[campo].forEach((error: string) => {
+          mensaje += `<li>${error}</li>`;
+        });
+      }
+    }
+    mensaje += '</ul>';
+    return mensaje;
+  }
 
+
+}

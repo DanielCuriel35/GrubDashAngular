@@ -4,6 +4,7 @@ import { Restaurante } from './restaurante.model';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
+import { RestauranteService } from '../services/restaurante.service';
 
 @Component({
   selector: 'app-mis-restaurantes',
@@ -12,7 +13,6 @@ import { FormsModule, NgForm } from '@angular/forms';
   styleUrl: './mis-restaurantes.component.css'
 })
 export class MisRestaurantesComponent {
-  private http = inject(HttpClient);
   restaurantes: Restaurante[] = [];
   public usuario: any;
   id: any;
@@ -22,51 +22,41 @@ export class MisRestaurantesComponent {
   formData = {
     usuario_id: '',
     nombreLocal: '',
-    img: null as File | null,
     precioMedio: '',
     descripcion: '',
     localidad: '',
     ubicacion: ''
   };
 
+  constructor(private restauranteService: RestauranteService) { }
+
   ngOnInit(): void {
     if (sessionStorage.getItem('usuario')) {
-      this.usuario = this.recuperarUsuario()
-      this.id = this.usuario.id
+      this.usuario = this.recuperarUsuario();
+      this.id = this.usuario.id;
+
+      this.restauranteService.obtenerRestaurantesPorUsuario(this.id)
+        .subscribe({
+          next: (data) => this.restaurantes = data,
+          error: (err) => console.error('Error al cargar restaurantes', err)
+        });
     }
-
-    this.http.get<Restaurante[]>('https://grubdashapi-production.up.railway.app/api/restaurantesU/' + this.id)
-      .subscribe({
-        next: (data) => this.restaurantes = data,
-        error: (err) => console.error('Error al cargar restaurantes', err)
-      });
-  }
-
-  recuperarUsuario(): any | null {
-    const data = sessionStorage.getItem('usuario');
-    return data ? JSON.parse(data) : null;
   }
 
   crearRestaurante(): void {
     this.mostrarFormulario = false;
 
-    const formDataToSend = new FormData();
-    formDataToSend.append('usuario_id', this.id.toString());
-    formDataToSend.append('nombreLocal', this.formData.nombreLocal || '');
-    formDataToSend.append('precioMedio', this.formData.precioMedio || '');
-    formDataToSend.append('descripcion', this.formData.descripcion || '');
-    formDataToSend.append('localidad', this.formData.localidad || '');
-    formDataToSend.append('ubicacion', this.formData.ubicacion || '');
-
-    if (this.imagenSeleccionada) {
-      formDataToSend.append('img',this.imagenSeleccionada);
-    }
-
-    this.http.post(`https://grubdashapi-production.up.railway.app/api/restaurante`, formDataToSend).subscribe({
+    this.restauranteService.crearRestaurante({
+      usuario_id: this.id,
+      nombreLocal: this.formData.nombreLocal,
+      precioMedio: this.formData.precioMedio,
+      descripcion: this.formData.descripcion,
+      localidad: this.formData.localidad,
+      ubicacion: this.formData.ubicacion,
+      img: this.imagenSeleccionada
+    }).subscribe({
       next: (res) => {
         console.log('Restaurante creado:', res);
-        this.mostrarFormulario = false;
-        this.resetForm();
         this.ngOnInit();
       },
       error: (err) => {
@@ -76,7 +66,9 @@ export class MisRestaurantesComponent {
   }
 
 
-  resetForm() {
+  recuperarUsuario(): any | null {
+    const data = sessionStorage.getItem('usuario');
+    return data ? JSON.parse(data) : null;
   }
 
   imgSel(event: any): void {
@@ -87,4 +79,6 @@ export class MisRestaurantesComponent {
   cerrarModal(event: MouseEvent) {
     this.mostrarFormulario = false;
   }
+
+
 }

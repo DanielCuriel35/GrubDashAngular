@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Pedido, ServicioService } from '../servicios.service';
+import { Pedido, PedidoService } from '../services/pedidos.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 
@@ -13,7 +13,7 @@ export class PedidosUserComponent implements OnInit {
   pedidos: Pedido[] = [];
   error: string = '';
   usuario: any;
-  constructor(private servicio: ServicioService) { }
+  constructor(private servicio: PedidoService) { }
 
   ngOnInit(): void {
     this.usuario = this.recuperarUsuario()

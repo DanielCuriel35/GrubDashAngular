@@ -1,30 +1,34 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Producto } from '../producto/producto.model';
+import { Ingrediente } from '../producto/ingrediente.model';
+import { RestauranteService } from '../services/restaurante.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Ingrediente } from '../producto/ingrediente.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-mi-restaurante',
-  imports: [CommonModule, RouterModule, HttpClientModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule,RouterModule],
   templateUrl: './mi-restaurante.component.html',
   styleUrl: './mi-restaurante.component.css'
 })
-export class MiRestauranteComponent {
+export class MiRestauranteComponent implements OnInit {
 
-  private http = inject(HttpClient);
   private route = inject(ActivatedRoute);
+  private restauranteService = inject(RestauranteService);
 
   productos: Producto[] = [];
+  ingredientesDisponibles: Ingrediente[] = [];
+
   idRestaurante!: string;
   local!: string;
+  public usuario: any;
+  id!:number;
   mostrarFormulario = false;
   mostrarModalIngrediente = false;
   imagenSeleccionada: File | null = null;
-
-  ingredientesDisponibles: Ingrediente[] = [];
 
   formData = {
     restaurante_id: '',
@@ -42,68 +46,122 @@ export class MiRestauranteComponent {
   };
 
   ngOnInit(): void {
+    if (sessionStorage.getItem('usuario')) {
+      this.usuario = this.recuperarUsuario();
+      this.id = this.usuario.id;
+    }
     this.idRestaurante = this.route.snapshot.paramMap.get('usuario_id')!;
     this.local = this.route.snapshot.paramMap.get('nombreLocal')!;
-    this.http.get<Ingrediente[]>(`https://grubdashapi-production.up.railway.app/api/ingredientes`)
-      .subscribe({
-        next: (data) => this.ingredientesDisponibles = data,
-        error: (err) => console.error('Error al cargar ingredientes', err)
-      });
-    this.http.get<Producto[]>(`https://grubdashapi-production.up.railway.app/api/productos/${this.idRestaurante}`)
-      .subscribe({
-        next: (data) => this.productos = data,
-        error: (err) => console.error('Error al cargar productos', err)
-      });
+    this.formData.restaurante_id = this.idRestaurante;
+
+    this.restauranteService.obtenerIngredientes().subscribe({
+      next: (data) => this.ingredientesDisponibles = data,
+      error: (err) => {
+        console.error('Error al cargar ingredientes', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudieron cargar los ingredientes'
+        });
+      }
+    });
+
+    this.cargarProductos();
+  }
+
+  cargarProductos(): void {
+    this.restauranteService.obtenerProductosPorRestaurante(this.idRestaurante).subscribe({
+      next: (data) => this.productos = data,
+      error: (err) => {
+        console.error('Error al cargar productos', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudieron cargar los productos'
+        });
+      }
+    });
   }
 
   crearProducto(): void {
-  this.mostrarFormulario = false;
-
-  const formDataToSend = new FormData();
-
-  formDataToSend.append('restaurante_id', this.idRestaurante);
-  formDataToSend.append('nombreProducto', this.formData.nombreProducto);
-  formDataToSend.append('precio', this.formData.precio);
-  formDataToSend.append('descripcion', this.formData.descripcion);
-  formDataToSend.append('tiempoPreparacion', this.formData.tiempoPreparacion);
-
-  if (this.imagenSeleccionada) {
-    formDataToSend.append('img', this.imagenSeleccionada);
-  }
-
-  this.formData.ingredientes.forEach((ingrediente, index) => {
-    formDataToSend.append(`ingredientes[${index}]`, ingrediente.id.toString());
-  });
-
-  this.http.post(`https://grubdashapi-production.up.railway.app/api/producto`, formDataToSend).subscribe({
-    next: (res) => {
-      console.log('Producto creado:', res);
-      this.ngOnInit();
-    },
-    error: (err) => {
-      console.error('Error al crear producto:', err);
+    if (!this.formData.nombreProducto || !this.formData.precio) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Datos incompletos',
+        text: 'Por favor completa el nombre y precio del producto'
+      });
+      return;
     }
-  });
-}
 
-
-  cerrarModal(event: MouseEvent) {
     this.mostrarFormulario = false;
+
+    this.restauranteService.crearProducto({
+      restaurante_id: this.formData.restaurante_id,
+      nombreProducto: this.formData.nombreProducto,
+      precio: this.formData.precio,
+      descripcion: this.formData.descripcion,
+      tiempoPreparacion: this.formData.tiempoPreparacion,
+      img: this.imagenSeleccionada,
+      ingredientes: this.formData.ingredientes
+    }).subscribe({
+      next: (res) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Producto creado',
+          text: 'El producto fue creado exitosamente',
+          timer: 1500,
+          showConfirmButton: false,
+          toast: true,
+          position: 'top-end'
+        });
+        this.cargarProductos();
+        this.limpiarFormularioProducto();
+      },
+      error: (err) => {
+        console.error('Error al crear producto:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo crear el producto'
+        });
+      }
+    });
   }
 
   crearIngrediente(): void {
-    this.http.post<{ message: string, data: Ingrediente }>(`https://grubdashapi-production.up.railway.app/api/ingrediente`, this.nuevoIngrediente)
-      .subscribe({
-        next: (res) => {
-          console.log('Ingrediente creado:', res.data);
-          this.ingredientesDisponibles.push(res.data);
-          this.mostrarModalIngrediente = false;
-          this.nuevoIngrediente = { nombre: '', descripcion: '' };
-        },
-        error: (err) => {
-          console.error('Error al crear ingrediente:', err);
-        }
+    if (!this.nuevoIngrediente.nombre) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Nombre requerido',
+        text: 'Por favor ingresa el nombre del ingrediente'
       });
+      return;
+    }
+
+    this.restauranteService.crearIngrediente(this.nuevoIngrediente).subscribe({
+      next: (res) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Ingrediente creado',
+          text: 'El ingrediente fue agregado exitosamente',
+          timer: 1500,
+          showConfirmButton: false,
+          toast: true,
+          position: 'top-end'
+        });
+        this.ingredientesDisponibles.push(res.data);
+        this.mostrarModalIngrediente = false;
+        this.nuevoIngrediente = { nombre: '', descripcion: '' };
+      },
+      error: (err) => {
+        console.error('Error al crear ingrediente:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo crear el ingrediente'
+        });
+      }
+    });
   }
 
   imgSel(event: any): void {
@@ -111,10 +169,30 @@ export class MiRestauranteComponent {
     this.imagenSeleccionada = file || null;
   }
 
-
-  cerrarModalIngrediente(event: MouseEvent) {
-    this.mostrarModalIngrediente = false;
-
+  cerrarModal(_: MouseEvent): void {
+    this.mostrarFormulario = false;
+    this.limpiarFormularioProducto();
   }
 
+  cerrarModalIngrediente(_: MouseEvent): void {
+    this.mostrarModalIngrediente = false;
+  }
+
+  recuperarUsuario(): any | null {
+    const data = sessionStorage.getItem('usuario');
+    return data ? JSON.parse(data) : null;
+  }
+
+  private limpiarFormularioProducto(): void {
+    this.formData = {
+      restaurante_id: this.idRestaurante,
+      nombreProducto: '',
+      img: null,
+      precio: '',
+      descripcion: '',
+      tiempoPreparacion: '',
+      ingredientes: []
+    };
+    this.imagenSeleccionada = null;
+  }
 }

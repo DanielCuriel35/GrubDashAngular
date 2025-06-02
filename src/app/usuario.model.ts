@@ -1,4 +1,4 @@
-import { Restaurante } from "./servicios.service";
+import { Restaurante } from "./services/pedidos.service";
 
 export class Usuario {
   id!: number;

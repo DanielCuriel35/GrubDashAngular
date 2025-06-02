@@ -3,8 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Producto {
-  id:number;
+  id: number;
   nombre: string;
+  img:File;
   cantidad: number;
   precio_unitario: number;
 }
@@ -28,21 +29,39 @@ export interface Pedido {
 @Injectable({
   providedIn: 'root'
 })
-export class ServicioService {
-  private apiUrl = 'http://localhost/Apis/GrubDashApi/public/api/pedidos';
+export class PedidoService {
+  private apiUrl = 'https://grubdashapi-production.up.railway.app/api';
 
   constructor(private http: HttpClient) { }
 
   obtenerPedidosUser(usuarioId: number): Observable<Pedido[]> {
-    const url = `${this.apiUrl}/${usuarioId}`;
+    const url = `${this.apiUrl}/pedidos/${usuarioId}`;
     return this.http.get<Pedido[]>(url);
   }
   obtenerPedidosRest(restauranteId: number): Observable<Pedido[]> {
-    const url = `${this.apiUrl}R/${restauranteId}`;
+    const url = `${this.apiUrl}/pedidosR/${restauranteId}`;
     return this.http.get<Pedido[]>(url);
   }
 
   actualizarEstado(pedidoId: number, nuevoEstado: string) {
-  return this.http.put(`${this.apiUrl}/${pedidoId}/estado`, { estado: nuevoEstado });
-}
+    return this.http.put(`${this.apiUrl}/pedidos/${pedidoId}/estado`, { estado: nuevoEstado });
+  }
+
+  obtenerCarrito(usuarioId: number): Observable<Pedido> {
+    return this.http.get<Pedido>(`${this.apiUrl}/pedidosC/${usuarioId}`);
+  }
+
+  eliminarProductoDelPedido(usuarioId: number, productoId: number) {
+    return this.http.post(`${this.apiUrl}/pedidosE`, {
+      usuario_id: usuarioId,
+      producto_id: productoId
+    });
+  }
+
+  marcarPedidoComoPendiente(usuarioId: number) {
+    return this.http.post(`${this.apiUrl}/pedidoP`, {
+      usuario_id: usuarioId
+    });
+  }
+
 }

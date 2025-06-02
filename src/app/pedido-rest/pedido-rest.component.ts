@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { Pedido, ServicioService } from '../servicios.service';
+import { Pedido, PedidoService } from '../services/pedidos.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-pedido-rest',
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './pedido-rest.component.html',
   styleUrl: './pedido-rest.component.css'
 })
@@ -13,19 +14,23 @@ export class PedidoRestComponent {
   pedidos: Pedido[] = [];
   error: string = '';
   usuario: any;
-  constructor(private servicio: ServicioService) { }
+
+  constructor(private servicio: PedidoService) {}
 
   ngOnInit(): void {
-    this.usuario = this.recuperarUsuario()
-    this.servicio.obtenerPedidosRest(this.usuario.restaurante.id).subscribe({
+    this.usuario = this.recuperarUsuario();
+    this.servicio.obtenerPedidosRest(this.usuario.restaurantes.id).subscribe({
       next: (data) => {
         this.pedidos = data;
         console.log(this.pedidos);
-
       },
       error: (err) => {
         console.error('Error al cargar pedidos', err);
-        this.error = 'No se pudieron cargar los pedidos';
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudieron cargar los pedidos'
+        });
       }
     });
   }
@@ -43,25 +48,72 @@ export class PedidoRestComponent {
   }
 
   marcarComoEnviado(pedido: any) {
-  this.servicio.actualizarEstado(pedido.id, 'enviado').subscribe({
-    next: (response) => {
-      pedido.estado = 'enviado'; 
-    },
-    error: (err) => {
-      console.error('Error al actualizar estado:', err);
-    }
-  });
-}
+    Swal.fire({
+      title: '¿Marcar pedido como enviado?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, marcar',
+      cancelButtonText: 'Cancelar'
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.servicio.actualizarEstado(pedido.id, 'enviado').subscribe({
+          next: () => {
+            pedido.estado = 'enviado';
+            Swal.fire({
+              icon: 'success',
+              title: 'Actualizado',
+              text: 'El pedido fue marcado como enviado',
+              timer: 1500,
+              showConfirmButton: false,
+              toast: true,
+              position: 'top-end'
+            });
+          },
+          error: (err) => {
+            console.error('Error al actualizar estado:', err);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se pudo actualizar el estado del pedido'
+            });
+          }
+        });
+      }
+    });
+  }
 
-marcarComoEntregado(pedido: any) {
-  this.servicio.actualizarEstado(pedido.id, 'entregado').subscribe({
-    next: (response) => {
-      pedido.estado = 'entregado';
-    },
-    error: (err) => {
-      console.error('Error al actualizar estado:', err);
-    }
-  });
-}
-
+  marcarComoEntregado(pedido: any) {
+    Swal.fire({
+      title: '¿Marcar pedido como entregado?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, marcar',
+      cancelButtonText: 'Cancelar'
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.servicio.actualizarEstado(pedido.id, 'entregado').subscribe({
+          next: () => {
+            pedido.estado = 'entregado';
+            Swal.fire({
+              icon: 'success',
+              title: 'Actualizado',
+              text: 'El pedido fue marcado como entregado',
+              timer: 1500,
+              showConfirmButton: false,
+              toast: true,
+              position: 'top-end'
+            });
+          },
+          error: (err) => {
+            console.error('Error al actualizar estado:', err);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se pudo actualizar el estado del pedido'
+            });
+          }
+        });
+      }
+    });
+  }
 }

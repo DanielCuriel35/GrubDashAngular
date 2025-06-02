@@ -1,7 +1,7 @@
 <div class="container" *ngIf="usuario!=undefined">
   <div class="row">
-    <div class="col-12 col-md-6 col-lg-4 mt-5">
-      <div *ngFor="let r of restaurantes" class="card shadow mb-4">
+    <div *ngFor="let r of restaurantes" class="col-12 col-md-6 col-lg-4 mt-5">
+      <div class="card shadow mb-4">
         <div class="card-body text-center">
           <a [routerLink]="['/restaurante', r.usuario_id, r.nombreLocal]" class="text-decoration-none">
             <h2 class="card-title fw-bold mb-4">{{ r.nombreLocal }}</h2>

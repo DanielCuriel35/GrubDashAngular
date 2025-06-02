@@ -1,9 +1,10 @@
-import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
 import { MainComponent } from '../main/main.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-perfil',
@@ -14,66 +15,70 @@ import { MainComponent } from '../main/main.component';
 export class PerfilComponent implements OnInit {
   modoEdicion = false;
   usuario: any;
-  restaurante: any
+  restaurante: any;
   imagenSeleccionada: File | null = null;
-  constructor(private http: HttpClient, private router: Router, private main: MainComponent) { }
+
+  constructor(private authService: AuthService, private router: Router, private main: MainComponent) {}
 
   ngOnInit(): void {
-    this.usuario = this.recuperarUsuario()
-    this.restaurante = this.usuario.restaurantes
+    this.usuario = this.authService.obtenerUsuario();
+    this.restaurante = this.usuario.restaurantes;
     console.log(this.restaurante);
-
   }
+
   actualizarUsuario(): void {
-    this.http.put(`https://grubdashapi-production.up.railway.app/api/usuario/${this.usuario.id}`, this.usuario)
-      .subscribe({
-        next: (res: any) => {
-          alert('Datos actualizados con éxito');
-          sessionStorage.setItem('usuario', JSON.stringify(res.user));
-          this.modoEdicion = false;
-          this.main.ngOnInit()
-          this.router.navigate(['/']);
-
-        },
-        error: (err: any) => {
-          console.error('Error al actualizar:', err);
-          alert('Hubo un error al actualizar');
-        }
-      });
+    this.authService.actualizarUsuario(this.usuario).subscribe({
+      next: (res: any) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Datos actualizados',
+          text: 'Datos actualizados con éxito',
+          timer: 1500,
+          showConfirmButton: false,
+          toast: true,
+          position: 'top-end'
+        });
+        sessionStorage.setItem('usuario', JSON.stringify(res.user));
+        this.modoEdicion = false;
+        this.main.ngOnInit();
+        this.router.navigate(['/']);
+      },
+      error: (err: any) => {
+        console.error('Error al actualizar:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al actualizar',
+          confirmButtonText: 'Cerrar'
+        });
+      }
+    });
   }
 
-
- actualizarRestaurante() {
-  const formData = new FormData();
-
-  formData.append('_method', 'PUT');  // para que Laravel entienda que es PUT
-  formData.append('nombreLocal', this.restaurante.nombreLocal || '');
-  formData.append('precioMedio', this.restaurante.precioMedio || '');
-  formData.append('descripcion', this.restaurante.descripcion || '');
-  formData.append('localidad', this.restaurante.localidad || '');
-  formData.append('ubicacion', this.restaurante.ubicacion || '');
-
-  if (this.imagenSeleccionada) {
-    formData.append('img', this.imagenSeleccionada);
-  }
-  console.log(this.imagenSeleccionada);
-
-  this.http.post(`https://grubdashapi-production.up.railway.app/api/restaurantesUpdate/${this.restaurante.id}`, formData)
-    .subscribe({
+  actualizarRestaurante(): void {
+    this.authService.actualizarRestaurante(this.restaurante, this.imagenSeleccionada).subscribe({
       next: (res) => {
-        alert('Restaurante actualizado con éxito');
+        Swal.fire({
+          icon: 'success',
+          title: 'Restaurante actualizado',
+          text: 'Restaurante actualizado con éxito',
+          timer: 1500,
+          showConfirmButton: false,
+          toast: true,
+          position: 'top-end'
+        });
         this.router.navigate(['/mRestaurantes']);
       },
       error: (err) => {
         console.error('Error actualizando restaurante', err);
-        alert('Error al actualizar restaurante');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error al actualizar restaurante',
+          confirmButtonText: 'Cerrar'
+        });
       }
     });
-}
-
-  recuperarUsuario(): any | null {
-    const data = sessionStorage.getItem('usuario');
-    return data ? JSON.parse(data) : null;
   }
 
   imgSel(event: any): void {

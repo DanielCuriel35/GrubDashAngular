@@ -2,9 +2,10 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Usuario } from '../usuario.model';
+import { AuthService } from '../services/auth.service';
 import { MainComponent } from '../main/main.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -16,43 +17,64 @@ import { MainComponent } from '../main/main.component';
 export class LoginComponent {
   email = '';
   password = '';
-  usuario = new Usuario()
   showPassword = false;
+
+  private authService = inject(AuthService);
   private router = inject(Router);
-  private http = inject(HttpClient);
-  private main = inject(MainComponent)
+  private main = inject(MainComponent);
+
   login() {
-    this.http.post('https://grubdashapi-production.up.railway.app/api/login', {
-      email: this.email,
-      password: this.password
-    }).subscribe({
+    this.authService.login(this.email, this.password).subscribe({
       next: (res: any) => {
         console.log('Login exitoso:', res);
-        alert('¡Login exitoso!');
-        this.usuario = res.user;
-        const usuarioString = JSON.stringify(this.usuario);
-        sessionStorage.setItem('usuario', usuarioString);
-        this.main.ngOnInit()
+
+        if (res.access_token) {
+          sessionStorage.setItem('token', res.access_token);
+          console.log(sessionStorage.getItem('token'));
+
+        }
+
+        Swal.fire({
+          icon: 'success',
+          title: '¡Bienvenido!',
+          text: 'Has iniciado sesión correctamente.',
+          timer: 2000,
+          showConfirmButton: false
+        });
+
+        const usuario: Usuario = res.user;
+        this.authService.guardarUsuario(usuario);
+
+        this.main.ngOnInit();
         this.router.navigate(['/']);
-        console.log('hoola');
       },
       error: (err) => {
         console.error('Error en el login:', err);
         if (err.status === 422) {
-          alert('Errores de validación:\n' + JSON.stringify(err.error.errors, null, 2));
+          Swal.fire({
+            icon: 'error',
+            title: 'Error de validación',
+            html: `<pre style="text-align:left">${JSON.stringify(err.error.errors, null, 2)}</pre>`,
+          });
         } else if (err.status === 401) {
-          alert('Credenciales inválidas');
+          Swal.fire({
+            icon: 'error',
+            title: 'Credenciales inválidas',
+            text: 'Por favor verifica tu correo y contraseña.'
+          });
         } else {
-          alert('Error inesperado al iniciar sesión.');
+          Swal.fire({
+            icon: 'error',
+            title: 'Error inesperado',
+            text: 'No se pudo iniciar sesión. Inténtalo más tarde.'
+          });
         }
       }
     });
   }
 
 
-
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
-
 }
