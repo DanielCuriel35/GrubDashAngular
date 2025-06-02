@@ -19,9 +19,6 @@ export class AppComponent {
   private http = inject(HttpClient);
 
   ngOnInit(): void {
-    this.http.get('https://grubdashapi-production.up.railway.app/ping').subscribe(() => {
-    console.log('API despertada');
-  });
     this.http.get('https://jsonplaceholder.typicode.com/posts')
       .subscribe({
         next: (res) => this.data = res,
