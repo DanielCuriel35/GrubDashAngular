@@ -74,7 +74,7 @@ export class ProductoComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'No se pudo añadir el producto al pedido. Intenta de nuevo más tarde.',
+          text: 'No se pudo añadir el producto al pedido. Intenta de nuevo más tarde, comprube que todos los productos de su cesta son del mismo restaurante.',
           confirmButtonText: 'Cerrar'
         });
       }
