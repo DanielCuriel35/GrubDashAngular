@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://grubdashapi-production.up.railway.app//api';
+  private apiUrl = 'https://grubdashapi-production.up.railway.app/api';
 
   constructor(private http: HttpClient) { }
 
