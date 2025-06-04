@@ -17,12 +17,4 @@ export class AppComponent {
   data: any;
 
   private http = inject(HttpClient);
-
-  ngOnInit(): void {
-    this.http.get('https://jsonplaceholder.typicode.com/posts')
-      .subscribe({
-        next: (res) => this.data = res,
-        error: (err) => console.error('Error al llamar la API:', err)
-      });
-  }
 }

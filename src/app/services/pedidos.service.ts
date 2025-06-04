@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+//Interfaces que son usadas para enviar y recibir datos de la api
 export interface Producto {
   id: number;
   nombre: string;
@@ -30,9 +31,10 @@ export interface Pedido {
   providedIn: 'root'
 })
 export class PedidoService {
+  //Ruta de mi api
   private apiUrl = 'https://grubdashapi-production.up.railway.app/api';
-
-  constructor(private http: HttpClient) { }
+  //Libreria de http
+  private http = inject(HttpClient)
 
   obtenerPedidosUser(usuarioId: number): Observable<Pedido[]> {
     const url = `${this.apiUrl}/pedidos/${usuarioId}`;

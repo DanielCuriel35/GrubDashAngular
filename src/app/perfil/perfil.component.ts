@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,22 +13,28 @@ import Swal from 'sweetalert2';
   styleUrl: './perfil.component.css'
 })
 export class PerfilComponent implements OnInit {
+  //Variables que usaré después
   modoEdicion = false;
   usuario: any;
   restaurante: any;
   imagenSeleccionada: File | null = null;
 
-  constructor(private authService: AuthService, private router: Router, private main: MainComponent) {}
+  //Llamadas para consumir de diferentes librerias
+  private authService = inject(AuthService)
+  private router = inject(Router)
+  private main = inject(MainComponent)
 
+  //Función que se ejecuta al lanzarse el componente
   ngOnInit(): void {
     this.usuario = this.authService.obtenerUsuario();
     this.restaurante = this.usuario.restaurantes;
     console.log(this.restaurante);
   }
-
+  //Función que llama al servicio para actualizar un usuario
   actualizarUsuario(): void {
     this.authService.actualizarUsuario(this.usuario).subscribe({
       next: (res: any) => {
+        // Lanza alert de confirmación
         Swal.fire({
           icon: 'success',
           title: 'Datos actualizados',
@@ -38,13 +44,17 @@ export class PerfilComponent implements OnInit {
           toast: true,
           position: 'top-end'
         });
+        //Almacena el usuario modificado en el storage
         sessionStorage.setItem('usuario', JSON.stringify(res.user));
         this.modoEdicion = false;
+        //Recarga la barra de navegación
         this.main.ngOnInit();
+        //Te redirige a inicio
         this.router.navigate(['/']);
       },
       error: (err: any) => {
         console.error('Error al actualizar:', err);
+        //Lanza alert de error
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -54,10 +64,11 @@ export class PerfilComponent implements OnInit {
       }
     });
   }
-
+  //Función que llama al servicio para modificar el restaurante del usuario
   actualizarRestaurante(): void {
     this.authService.actualizarRestaurante(this.restaurante, this.imagenSeleccionada).subscribe({
       next: (res) => {
+        // Lanza alert de confirmación
         Swal.fire({
           icon: 'success',
           title: 'Restaurante actualizado',
@@ -67,10 +78,12 @@ export class PerfilComponent implements OnInit {
           toast: true,
           position: 'top-end'
         });
+        //Te redirige a la pagina de tu restaurante
         this.router.navigate(['/mRestaurantes']);
       },
       error: (err) => {
         console.error('Error actualizando restaurante', err);
+        //Lanza alert de error
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -81,10 +94,4 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-  imgSel(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.imagenSeleccionada = file;
-    }
-  }
 }

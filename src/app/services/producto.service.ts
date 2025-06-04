@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Producto } from '../producto/producto.model';
@@ -8,9 +8,10 @@ import { subirImagenCloudinary } from './cloudinary.service';
   providedIn: 'root'
 })
 export class ProductoService {
+  //Ruta de mi api
   private apiUrl = 'https://grubdashapi-production.up.railway.app/api';
-
-  constructor(private http: HttpClient) { }
+  //Libreria de http
+  private http = inject(HttpClient)
 
   obtenerProducto(id: number): Observable<Producto> {
     return this.http.get<Producto>(`${this.apiUrl}/Dproducto/${id}`);

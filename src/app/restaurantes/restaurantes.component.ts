@@ -11,26 +11,24 @@ import { RestauranteService } from '../services/restaurante.service';
   styleUrl: './restaurantes.component.css'
 })
 export class RestaurantesComponent implements OnInit {
-  private restauranteService = inject(RestauranteService);
+  //Variables que usaré después
   restaurantes: Restaurante[] = [];
   usuario: any;
-  localidad: string | undefined;
-
+  localidad!: string;
+  //Llamadas para consumir de diferentes librerias
+  private restauranteService = inject(RestauranteService);
+  //Función que se ejecuta al lanzarse el componente
   ngOnInit(): void {
     this.usuario = this.recuperarUsuario();
-    this.localidad = this.usuario?.localidad;
+    this.localidad = this.usuario.localidad;
+    //Llamo al servicio para obtener los restaurantes de la localidad del usuario
+    this.restauranteService.obtenerRestaurantesPorLocalidad(this.localidad).subscribe({
+      next: (data) => (this.restaurantes = data),
+      error: (err) => console.error('Error al cargar restaurantes', err)
+    });
 
-    if (this.localidad) {
-      this.restauranteService.obtenerRestaurantesPorLocalidad(this.localidad).subscribe({
-        next: (data) => (this.restaurantes = data),
-        error: (err) => console.error('Error al cargar restaurantes', err)
-      });
-    } else {
-      console.warn('No se encontró localidad para el usuario');
-      this.restaurantes = [];
-    }
   }
-
+  //Funcion que sirve para recuperar el usuario del session storage
   recuperarUsuario(): any | null {
     const data = sessionStorage.getItem('usuario');
     return data ? JSON.parse(data) : null;

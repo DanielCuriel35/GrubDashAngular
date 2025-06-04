@@ -14,21 +14,23 @@ import Swal from 'sweetalert2';
   styleUrl: './mi-producto.component.css'
 })
 export class MiProductoComponent implements OnInit {
-
+  //Variables que usaré después
+  producto!: Producto;
+  imagen!: File;
+   //Llamadas para consumir de diferentes librerias
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private productoService = inject(ProductoService);
 
-  producto!: Producto;
-  imagen!: File;
-
+  //Función que se ejecuta al lanzarse el componente
   ngOnInit(): void {
+    //Recupero id de la ruta
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.cargarProducto(Number(id));
     }
   }
-
+  //Función que llama al servicio para cargar el producto
   cargarProducto(id: number) {
     this.productoService.obtenerProducto(id).subscribe({
       next: (data) => {
@@ -36,6 +38,7 @@ export class MiProductoComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando producto', err);
+        //Lanza alert de error
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -44,10 +47,11 @@ export class MiProductoComponent implements OnInit {
       }
     });
   }
-
+  //Función que llama al servicio para actualizar un producto
   actualizarProducto() {
     this.productoService.actualizarProducto(this.producto, this.imagen).subscribe({
       next: () => {
+        // Lanza alert de confirmación
         Swal.fire({
           icon: 'success',
           title: 'Producto modificado',
@@ -61,6 +65,7 @@ export class MiProductoComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error actualizando producto', err);
+        //Lanza alert de error
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -69,15 +74,9 @@ export class MiProductoComponent implements OnInit {
       }
     });
   }
-
-  onImageSel(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.imagen = file;
-    }
-  }
-
+  //Función que llama al servicio para borrar un producto
   borrarProducto(id: number) {
+    //Alert de pregunta de confirmación
     Swal.fire({
       title: '¿Estás seguro?',
       text: 'No podrás revertir esta acción.',
@@ -89,10 +88,12 @@ export class MiProductoComponent implements OnInit {
       if (result.isConfirmed) {
         this.productoService.eliminarProducto(id).subscribe({
           next: () => {
+            // Lanza alert de confirmación
             Swal.fire('Eliminado', 'El producto fue eliminado.', 'success');
             this.router.navigate(['/mRestaurantes']);
           },
           error: (err) => {
+            //Lanza alert de error
             Swal.fire('Error', 'No se pudo eliminar el producto.', 'error');
             console.error(err);
           }

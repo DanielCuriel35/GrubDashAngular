@@ -11,7 +11,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './inicio.component.css'
 })
 export class InicioComponent implements OnInit {
+  //Variables que usaré después
   public usuario:any
+  //Función que se ejecuta al lanzarse el componente
   ngOnInit(): void {
     if (sessionStorage.getItem('usuario')) {
       this.usuario = this.recuperarUsuario();
@@ -19,7 +21,7 @@ export class InicioComponent implements OnInit {
     console.log(this.usuario);
 
   }
-
+  //Funcion que sirve para recuperar el usuario del session storage
   recuperarUsuario(): any | null {
     const data = sessionStorage.getItem('usuario');
     return data ? JSON.parse(data) : null;

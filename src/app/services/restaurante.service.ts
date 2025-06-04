@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Restaurante } from '../restaurantes/restaurante.model';
@@ -10,9 +10,10 @@ import { subirImagenCloudinary } from './cloudinary.service';
   providedIn: 'root'
 })
 export class RestauranteService {
+  //Ruta de mi api
   private apiUrl = 'https://grubdashapi-production.up.railway.app/api';
-
-  constructor(private http: HttpClient) { }
+  //Libreria de http
+  private http = inject(HttpClient)
 
   obtenerRestaurantesPorLocalidad(localidad: string): Observable<Restaurante[]> {
     return this.http.get<Restaurante[]>(`${this.apiUrl}/restaurantes/${localidad}`);

@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
   styleUrl: './main.component.css'
 })
 export class MainComponent implements OnInit {
+  //Variables que usaré después
   mostrarNav = true;
   usuario = {
     nombre: '',
@@ -24,6 +25,9 @@ export class MainComponent implements OnInit {
     restaurante: false
   };
   ultimoSegmento !: any;
+  //Llamadas para consumir de diferentes librerias
+  private router = inject(Router)
+  //Función que se ejecuta al lanzarse el componente
   ngOnInit(): void {
     if (sessionStorage.getItem('usuario')) {
       this.usuario = this.recuperarUsuario()
@@ -34,7 +38,9 @@ export class MainComponent implements OnInit {
       this.usuario = usuarioVacio
     }
   }
+  //Función que deslogea al usuario
   logout() {
+    //Alert de pregunta de confirmación
     Swal.fire({
       title: '¿Estás seguro que quieres cerrar sesión?',
       icon: 'warning',
@@ -44,9 +50,11 @@ export class MainComponent implements OnInit {
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
+        //Borra usuario del storage
         sessionStorage.removeItem('usuario');
+        //Redirige a inicio
         this.router.navigate(['/']);
-        this.ngOnInit();
+        // Lanza alert de confirmación
         Swal.fire({
           icon: 'success',
           title: 'Sesión cerrada',
@@ -57,11 +65,12 @@ export class MainComponent implements OnInit {
       }
     });
   }
+  //Funcion que sirve para recuperar el usuario del session storage
   recuperarUsuario(): any | null {
     const data = sessionStorage.getItem('usuario');
     return data ? JSON.parse(data) : null;
   }
-  constructor(private router: Router) { }
+
 
 
 

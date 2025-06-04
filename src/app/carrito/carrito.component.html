@@ -6,10 +6,7 @@
         <div class="ms-3 flex-grow-1">
           <h5 class="fw-bold">{{ producto.nombre }}</h5>
           <p class="mb-1">Precio: ${{ producto.precio_unitario }}</p>
-          <div class="input-group w-50">
-            <span class="input-group-text">Cantidad</span>
-            <input type="number" class="form-control" [(ngModel)]="producto.cantidad" min="1" (change)="calcularTotal()">
-          </div>
+          <p class="mb-1">Cantidad: {{ producto.cantidad }}</p>
         </div>
         <button class="btn btn-danger ms-3" (click)="eliminarProducto(producto.id)">Eliminar</button>
       </div>

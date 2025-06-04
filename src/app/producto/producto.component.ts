@@ -13,12 +13,13 @@ import Swal from 'sweetalert2';
   styleUrl: './producto.component.css'
 })
 export class ProductoComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private productoService = inject(ProductoService);
-
+  //Variables que usaré después
   producto!: Producto;
   usuario: any;
-
+  //Llamadas para consumir de diferentes librerias
+  private route = inject(ActivatedRoute);
+  private productoService = inject(ProductoService);
+  //Función que se ejecuta al lanzarse el componente
   ngOnInit(): void {
     this.usuario = this.recuperarUsuario();
     const idProducto = this.route.snapshot.paramMap.get('producto_id');
@@ -26,15 +27,15 @@ export class ProductoComponent implements OnInit {
       this.cargarProducto(Number(idProducto));
     }
   }
-
+  //Función que llama al servicio para cargar el producto atraves de su id
   cargarProducto(id: number) {
     this.productoService.obtenerProducto(id).subscribe({
       next: (data) => {
         this.producto = data;
-        console.log(this.producto);
       },
       error: (err) => {
         console.error('Error al cargar productos', err);
+        //Lanza alert de error
         Swal.fire({
           icon: 'error',
           title: 'Error al cargar el producto',
@@ -44,21 +45,12 @@ export class ProductoComponent implements OnInit {
       }
     });
   }
-
+  //Función que llama a servicio para añadir producto
   aniadirProducto() {
-    if (!this.usuario) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'No autenticado',
-        text: 'Debes iniciar sesión para añadir productos al pedido.',
-        confirmButtonText: 'Ir a login',
-        showCancelButton: true,
-        cancelButtonText: 'Cancelar'
-      })
-    }
     this.productoService.aniadirProductoAlPedido(this.producto.id, this.usuario.id).subscribe({
       next: (res) => {
         console.log('Producto añadido correctamente:', res);
+        // Lanza alert de confirmación
         Swal.fire({
           icon: 'success',
           title: 'Producto añadido',
@@ -71,6 +63,7 @@ export class ProductoComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al añadir producto:', err);
+        //Lanza alert de error
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -80,7 +73,7 @@ export class ProductoComponent implements OnInit {
       }
     });
   }
-
+  //Funcion que sirve para recuperar el usuario del session storage
   recuperarUsuario(): any | null {
     const data = sessionStorage.getItem('usuario');
     return data ? JSON.parse(data) : null;

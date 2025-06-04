@@ -6,10 +6,10 @@
     <form class="form" (ngSubmit)="login()">
       <input type="email" class="input" placeholder="Email" [(ngModel)]="email" name="email" required />
       <div class="contraseña">
-        <input [type]="showPassword ? 'text' : 'password'" class="input" placeholder="Password" [(ngModel)]="password"
+        <input [type]="verPassword ? 'text' : 'password'" class="input" placeholder="Password" [(ngModel)]="password"
           name="password" required />
-        <button type="button" (click)="togglePasswordVisibility()">
-          <i class="bi" [class.bi-eye]="!showPassword" [class.bi-eye-slash]="showPassword"></i>
+        <button type="button" (click)="cambiarVisibilidadPassword()">
+          <i class="bi" [class.bi-eye]="!verPassword" [class.bi-eye-slash]="verPassword"></i>
         </button>
       </div>
       <button type="submit" class="form-btn">Log in</button>

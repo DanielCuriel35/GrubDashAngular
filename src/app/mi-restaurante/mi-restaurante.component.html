@@ -28,9 +28,9 @@
         <form (ngSubmit)="crearProducto()" #form="ngForm">
           <input type="text" name="nombreProducto" [(ngModel)]="formData.nombreProducto"
             placeholder="Nombre del producto" required />
-            
+
           <label for="img">Imagen producto</label>
-          <input type="file" name="img" [(ngModel)]="formData.img" placeholder="URL de la imagen" required (change)="imgSel($event)"/>
+          <input type="file" name="img" [(ngModel)]="formData.img" placeholder="URL de la imagen" required/>
 
           <input type="text" name="precio" [(ngModel)]="formData.precio" placeholder="Precio" required />
 

@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { RestauranteService } from '../services/restaurante.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-mis-restaurantes',
@@ -13,12 +14,12 @@ import { RestauranteService } from '../services/restaurante.service';
   styleUrl: './mis-restaurantes.component.css'
 })
 export class MisRestaurantesComponent {
+  //Variables que usaré después
   restaurantes: Restaurante[] = [];
-  public usuario: any;
+  usuario: any;
   id: any;
   mostrarFormulario = false;
   imagenSeleccionada: File | null = null;
-
   formData = {
     usuario_id: '',
     nombreLocal: '',
@@ -27,14 +28,15 @@ export class MisRestaurantesComponent {
     localidad: '',
     ubicacion: ''
   };
+  //Llamadas para consumir de diferentes librerias
+  private restauranteService = inject(RestauranteService)
 
-  constructor(private restauranteService: RestauranteService) { }
-
+  //Función que se ejecuta al lanzarse el componente
   ngOnInit(): void {
     if (sessionStorage.getItem('usuario')) {
       this.usuario = this.recuperarUsuario();
       this.id = this.usuario.id;
-
+      //Llamada al servicio para cargar el restaurante del usuario
       this.restauranteService.obtenerRestaurantesPorUsuario(this.id)
         .subscribe({
           next: (data) => this.restaurantes = data,
@@ -42,10 +44,9 @@ export class MisRestaurantesComponent {
         });
     }
   }
-
+  //Función que llama al servicio para crear restaurantes
   crearRestaurante(): void {
     this.mostrarFormulario = false;
-
     this.restauranteService.crearRestaurante({
       usuario_id: this.id,
       nombreLocal: this.formData.nombreLocal,
@@ -57,25 +58,33 @@ export class MisRestaurantesComponent {
     }).subscribe({
       next: (res) => {
         console.log('Restaurante creado:', res);
+        // Lanza alert de confirmación
+        Swal.fire({
+          icon: 'success',
+          title: 'Restaurante creado',
+          text: res.message,
+          timer: 1500
+        });
         this.ngOnInit();
       },
       error: (err) => {
         console.error('Error al crear restaurante:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.error?.message || 'Error eliminando producto',
+          confirmButtonText: 'Cerrar'
+        });
       }
     });
   }
 
-
+  //Funcion que sirve para recuperar el usuario del session storage
   recuperarUsuario(): any | null {
     const data = sessionStorage.getItem('usuario');
     return data ? JSON.parse(data) : null;
   }
-
-  imgSel(event: any): void {
-    const file = event.target.files?.[0];
-    this.imagenSeleccionada = file || null;
-  }
-
+  //Función que cierra el modal de creación de restaurante
   cerrarModal(event: MouseEvent) {
     this.mostrarFormulario = false;
   }

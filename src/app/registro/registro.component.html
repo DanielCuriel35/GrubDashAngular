@@ -12,10 +12,10 @@
       <input type="email" class="input" placeholder="Email" [(ngModel)]="usuario.email" name="email" required />
 
       <div class="contraseña">
-        <input [type]="showPassword ? 'text' : 'password'" class="input" placeholder="Password" [(ngModel)]="usuario.password"
+        <input [type]="verPassword ? 'text' : 'password'" class="input" placeholder="Password" [(ngModel)]="usuario.password"
           name="password" required />
-        <button type="button" (click)="togglePasswordVisibility()">
-          <i class="bi" [class.bi-eye]="!showPassword" [class.bi-eye-slash]="showPassword"></i>
+        <button type="button" (click)="cambiarVisibilidadPassword()">
+          <i class="bi" [class.bi-eye]="!verPassword" [class.bi-eye-slash]="verPassword"></i>
         </button>
       </div>
 

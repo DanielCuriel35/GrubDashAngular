@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Usuario } from '../usuario.model';
 import { Observable } from 'rxjs';
@@ -7,9 +7,10 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
+  //Ruta de mi api
   private apiUrl = 'https://grubdashapi-production.up.railway.app/api';
-
-  constructor(private http: HttpClient) { }
+  //Libreria de http
+  private http = inject(HttpClient)
 
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, { email, password });

@@ -13,42 +13,43 @@ import Swal from 'sweetalert2';
   styleUrl: './carrito.component.css'
 })
 export class CarritoComponent implements OnInit {
+  //Variables que usaré después
   usuario: any;
   productos: Producto[] = [];
   total: number = 0;
-
-  constructor(private pedidosService: PedidoService) {}
+   //Llamadas para consumir de diferentes librerias
+  private pedidosService = inject(PedidoService)
   private router = inject(Router)
 
+  //Función que se ejecuta al lanzarse el componente
   ngOnInit(): void {
     this.usuario = this.recuperarUsuario();
     if (this.usuario) {
       this.cargarPedido();
     }
   }
-
+  //Funcion que sirve para recuperar el usuario del session storage
   recuperarUsuario(): any | null {
     const data = sessionStorage.getItem('usuario');
     return data ? JSON.parse(data) : null;
   }
 
+  //Función que llama al servicio para cargar el pedido del carrito
   cargarPedido() {
     this.pedidosService.obtenerCarrito(this.usuario.id).subscribe({
       next: (pedido) => {
         this.productos = pedido.productos;
-        if (this.productos.length > 0) {
-          console.log(this.productos[0].img);
-        }
         this.calcularTotal();
       }
     });
   }
-
+  //Función que calcula el total del carrito
   calcularTotal() {
     this.total = this.productos.reduce((acc, p) => acc + p.precio_unitario * p.cantidad, 0);
   }
-
+  //Función que elimina productos del carrito
   eliminarProducto(productoId: number) {
+    //Alert de pregunta de confirmación
     Swal.fire({
       title: '¿Estás seguro?',
       text: 'Este producto será eliminado de tu carrito.',
@@ -60,10 +61,11 @@ export class CarritoComponent implements OnInit {
       if (result.isConfirmed) {
         this.productos = this.productos.filter(p => p.id !== productoId);
         this.calcularTotal();
-
+        //Llama al servicio para eliminarlo también en la base de datos
         this.pedidosService.eliminarProductoDelPedido(this.usuario.id, productoId).subscribe({
           next: (res: any) => {
             console.log('Producto eliminado:', res);
+            // Lanza alert de confirmación
             Swal.fire({
               icon: 'success',
               title: 'Producto eliminado',
@@ -76,6 +78,7 @@ export class CarritoComponent implements OnInit {
           },
           error: (err) => {
             console.error('Error eliminando producto:', err);
+            //Lanza alert de error
             Swal.fire({
               icon: 'error',
               title: 'Error',
@@ -89,6 +92,7 @@ export class CarritoComponent implements OnInit {
   }
 
   pago() {
+    //Alert de pregunta de confirmación
     Swal.fire({
       title: 'Confirmar pago',
       text: '¿Quieres marcar el pedido como pendiente para proceder con el pago?',
@@ -98,9 +102,11 @@ export class CarritoComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
+        //LLama al servicio para cambiar el estado del pedido
         this.pedidosService.marcarPedidoComoPendiente(this.usuario.id).subscribe({
           next: (res: any) => {
             console.log('Estado cambiado:', res);
+            // Lanza alert de confirmación
             Swal.fire({
               icon: 'success',
               title: 'Pedido actualizado',
@@ -110,10 +116,12 @@ export class CarritoComponent implements OnInit {
               toast: true,
               position: 'top-end'
             });
+            //Redirige a pedidos
             this.router.navigate(['/pedidosUser'])
           },
           error: (err) => {
             console.error('Error al cambiar estado:', err);
+            //Lanza alert de error
             Swal.fire({
               icon: 'error',
               title: 'Error',

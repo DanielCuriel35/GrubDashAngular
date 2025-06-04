@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Pedido, PedidoService } from '../services/pedidos.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
@@ -10,35 +10,38 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './pedidos-user.component.css'
 })
 export class PedidosUserComponent implements OnInit {
+  //Variables que usaré después
   pedidos: Pedido[] = [];
   error: string = '';
   usuario: any;
-  constructor(private servicio: PedidoService) { }
 
+  //Llamadas para consumir de diferentes librerias
+  private pedidosService = inject(PedidoService)
+
+  //Función que se ejecuta al lanzarse el componente
   ngOnInit(): void {
     this.usuario = this.recuperarUsuario()
     if (this.usuario != undefined) {
-      this.servicio.obtenerPedidosUser(this.usuario.id).subscribe({
+      //LLamo al servicio para obtener los pedidos de un usuario atraves de su id
+      this.pedidosService.obtenerPedidosUser(this.usuario.id).subscribe({
         next: (data) => {
           this.pedidos = data;
-          console.log(this.pedidos);
-
         },
         error: (err) => {
           console.error('Error al cargar pedidos', err);
-          this.error = 'No se pudieron cargar los pedidos';
         }
       });
     }
 
   }
 
+  //Función que sirve para recuperar el usuario del session storage
   recuperarUsuario(): any | null {
     const data = sessionStorage.getItem('usuario');
     return data ? JSON.parse(data) : null;
   }
-
-  getTotalPedido(pedido: any): number {
+  //Función que calcula el total de los pedidos
+  totalPedido(pedido: any): number {
     if (!pedido.productos) return 0;
     return pedido.productos.reduce((total: number, producto: any) => {
       return total + (producto.cantidad * producto.precio_unitario);

@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+//Servicio que sirve para subir las fotos a mi base de datos de iamgenes en cloudinary
 const CLOUD_NAME = 'dfgrakdu8';
 
 const UPLOAD_PRESETS: Record<'restaurante' | 'producto', string> = {
