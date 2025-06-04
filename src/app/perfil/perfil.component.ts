@@ -18,6 +18,8 @@ export class PerfilComponent implements OnInit {
   usuario: any;
   restaurante: any;
   imagenSeleccionada: File | null = null;
+  tiposRestaurante: string[] = ['Carne', 'Pescado', 'Mixto', 'Vegano'];
+
 
   //Llamadas para consumir de diferentes librerias
   private authService = inject(AuthService)
@@ -28,7 +30,6 @@ export class PerfilComponent implements OnInit {
   ngOnInit(): void {
     this.usuario = this.authService.obtenerUsuario();
     this.restaurante = this.usuario.restaurantes;
-    console.log(this.restaurante);
   }
   //Función que llama al servicio para actualizar un usuario
   actualizarUsuario(): void {

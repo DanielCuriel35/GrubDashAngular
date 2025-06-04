@@ -19,6 +19,7 @@ export class MisRestaurantesComponent {
   usuario: any;
   id: any;
   mostrarFormulario = false;
+  tiposRestaurante: string[] = ['Carne', 'Pescado', 'Mixto', 'Vegano'];
   imagenSeleccionada: File | null = null;
   formData = {
     usuario_id: '',
@@ -26,7 +27,8 @@ export class MisRestaurantesComponent {
     precioMedio: '',
     descripcion: '',
     localidad: '',
-    ubicacion: ''
+    ubicacion: '',
+    tipoRest: ''
   };
   //Llamadas para consumir de diferentes librerias
   private restauranteService = inject(RestauranteService)
@@ -54,7 +56,8 @@ export class MisRestaurantesComponent {
       descripcion: this.formData.descripcion,
       localidad: this.formData.localidad,
       ubicacion: this.formData.ubicacion,
-      img: this.imagenSeleccionada
+      img: this.imagenSeleccionada,
+      tipoRest: this.formData.tipoRest
     }).subscribe({
       next: (res) => {
         console.log('Restaurante creado:', res);

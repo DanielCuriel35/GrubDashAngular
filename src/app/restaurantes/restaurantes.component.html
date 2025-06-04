@@ -1,25 +1,38 @@
 <div class="container" *ngIf="usuario != undefined">
+  <div class="row mb-4">
+    <div class="col-12 col-md-6 mx-auto">
+      <select class="form-select" [(ngModel)]="filtroTipo" (change)="filtrarRestaurantes()">
+        <option value="">Todos los tipos</option>
+        <option value="Carne">Carne</option>
+        <option value="Pescado">Pescado</option>
+        <option value="Mixto">Mixto</option>
+        <option value="Vegano">Vegano</option>
+      </select>
+    </div>
+  </div>
+
   <div class="row">
-    <div *ngFor="let r of restaurantes" class="col-12 col-md-6 col-lg-4 mt-5 d-flex">
+    <div *ngFor="let r of restaurantesFiltrados" class="col-12 col-md-6 col-lg-4 mt-5 d-flex">
       <div class="card shadow mb-4 h-100 w-100">
         <div class="card-body text-center d-flex flex-column">
           <a [routerLink]="['/restaurante', r.usuario_id, r.nombreLocal]" class="text-decoration-none mb-3">
             <h2 class="card-title fw-bold mb-4">{{ r.nombreLocal }}</h2>
             <img [src]="r.img" class="img-fluid rounded mb-4 imgRestaurante" alt="{{ r.nombreLocal }}">
           </a>
-
           <div class="mb-3">
-            <a [href]="'https://maps.google.com/?q=' + r.ubicacion" target="_blank" class="text-decoration-none">
+            <a [href]="'https://maps.google.com/?q=' + r.ubicacion" target="blank" class="text-decoration-none">
               <span class="text-primary">
                 <i class="bi bi-geo-alt-fill"></i>
                 {{ r.ubicacion }}
               </span>
             </a>
           </div>
-
           <p class="card-text mb-3">
             {{ r.descripcion }}
           </p>
+          <div class="d-flex justify-content-end mb-3">
+            <span class="badge bg-info text-dark">{{ r.tipoRest }}</span>
+          </div>
           <p class="card-text mt-auto">
             <strong>Rango de precio por persona:</strong> {{ r.precioMedio }}
           </p>

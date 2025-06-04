@@ -42,7 +42,7 @@
     </form>
   </div>
 
-  <div *ngIf="usuario.restaurantes" class="card p-4 mt-4">
+   <div *ngIf="usuario.restaurantes" class="card p-4 mt-4">
     <h4 class="mb-3">Editar datos del restaurante</h4>
     <form (ngSubmit)="actualizarRestaurante()">
       <div class="mb-3">
@@ -52,7 +52,7 @@
 
       <div class="mb-3">
         <label class="form-label">Imagen</label>
-        <input type="file" class="form-control"  name="img" [readonly]="!modoEdicion">
+        <input type="file" class="form-control" name="img" [disabled]="!modoEdicion">
       </div>
 
       <div class="mb-3">
@@ -63,6 +63,24 @@
       <div class="mb-3">
         <label class="form-label">Descripción</label>
         <textarea class="form-control" [(ngModel)]="restaurante.descripcion" name="descripcion" [readonly]="!modoEdicion"></textarea>
+      </div>
+      
+      <div class="mb-3" *ngIf="modoEdicion">
+        <label class="form-label fw-bold">Tipo de Restaurante</label>
+        <div class="form-check" *ngFor="let tipo of tiposRestaurante">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="tipoRest"
+            [id]="'tipo-' + tipo"
+            [value]="tipo"
+            [(ngModel)]="restaurante.tipoRest"
+            required
+          >
+          <label class="form-check-label" [for]="'tipo-' + tipo">
+            {{ tipo }}
+          </label>
+        </div>
       </div>
 
       <div class="mb-3">

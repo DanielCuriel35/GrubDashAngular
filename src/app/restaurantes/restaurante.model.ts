@@ -7,4 +7,5 @@ export interface Restaurante {
   descripcion: string;
   localidad:string;
   ubicacion:string;
+  tipoRest: 'Carne' | 'Pescado' | 'Mixto' | 'Vegano';
 }

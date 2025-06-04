@@ -32,27 +32,35 @@
       </div>
     </div>
 
-    <div class="modal-fondo" *ngIf="mostrarFormulario" (click)="cerrarModal($event)">
-      <div class="modal-formulario" (click)="$event.stopPropagation()">
-        <h3>Nuevo Restaurante</h3>
-        <form (ngSubmit)="crearRestaurante()" #form="ngForm">
-          <input type="text" name="nombreLocal" [(ngModel)]="formData.nombreLocal" placeholder="Nombre del local"
-            required />
-          <label for="img">Imagen Restaurante</label>
-          <input type="file" name="img" placeholder="URL de la imagen" required />
-          <input type="text" name="precioMedio" [(ngModel)]="formData.precioMedio" placeholder="Precio medio"
-            required />
-          <textarea name="descripcion" [(ngModel)]="formData.descripcion" placeholder="Descripción" required></textarea>
-          <input type="text" name="localidad" [(ngModel)]="formData.localidad" placeholder="Localidad" required />
-          <input type="text" name="ubicacion" [(ngModel)]="formData.ubicacion" placeholder="Ubicación" required />
-
-          <div class="acciones">
-            <button type="submit">Crear</button>
-            <button type="button" (click)="mostrarFormulario = false">Cancelar</button>
-          </div>
-        </form>
+<div class="modal-fondo" *ngIf="mostrarFormulario" (click)="cerrarModal($event)">
+  <div class="modal-formulario" (click)="$event.stopPropagation()">
+    <h3>Nuevo Restaurante</h3>
+    <form (ngSubmit)="crearRestaurante()" #form="ngForm">
+      <input type="text" name="nombreLocal" [(ngModel)]="formData.nombreLocal" placeholder="Nombre del local" required />
+      <label for="img">Imagen Restaurante</label>
+      <input type="file" name="img" placeholder="URL de la imagen" required />
+      <input type="text" name="precioMedio" [(ngModel)]="formData.precioMedio" placeholder="Precio medio" required />
+      <textarea name="descripcion" [(ngModel)]="formData.descripcion" placeholder="Descripción" required></textarea>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Tipo de Restaurante</label>
+        <div class="form-check" *ngFor="let tipo of tiposRestaurante">
+          <input class="form-check-input" type="radio" name="tipoRest" [value]="tipo"
+                 [(ngModel)]="formData.tipoRest" [id]="'tipo-' + tipo" required />
+          <label class="form-check-label" [for]="'tipo-' + tipo">
+            {{ tipo }}
+          </label>
+        </div>
       </div>
-    </div>
+      <input type="text" name="localidad" [(ngModel)]="formData.localidad" placeholder="Localidad" required />
+      <input type="text" name="ubicacion" [(ngModel)]="formData.ubicacion" placeholder="Ubicación" required />
+      <div class="acciones">
+        <button type="submit">Crear</button>
+        <button type="button" (click)="mostrarFormulario = false">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 
   </div>
 </div>
