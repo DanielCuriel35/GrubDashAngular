@@ -73,12 +73,6 @@ export class MiRestauranteComponent implements OnInit {
     this.restauranteService.obtenerProductosPorRestaurante(this.idRestaurante).subscribe({
       next: (data) => this.productos = data,
       error: (err) => {
-        console.error('Error al cargar productos', err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'No se pudieron cargar los productos'
-        });
       }
     });
   }
