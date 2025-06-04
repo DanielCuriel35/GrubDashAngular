@@ -35,14 +35,16 @@ export class MisRestaurantesComponent {
 
   //Función que se ejecuta al lanzarse el componente
   ngOnInit(): void {
-    this.usuario = this.recuperarUsuario();
-    this.id = this.usuario.id;
-    //Llamada al servicio para cargar el restaurante del usuario
-    this.restauranteService.obtenerRestaurantesPorUsuario(this.id)
-      .subscribe({
-        next: (data) => this.restaurantes = data,
-        error: (err) => console.error('Error al cargar restaurantes', err)
-      });
+    if (sessionStorage.getItem('usuario')) {
+      this.usuario = this.recuperarUsuario();
+      this.id = this.usuario.id;
+      //Llamada al servicio para cargar el restaurante del usuario
+      this.restauranteService.obtenerRestaurantesPorUsuario(this.id)
+        .subscribe({
+          next: (data) => this.restaurantes = data,
+          error: (err) => console.error('Error al cargar restaurantes', err)
+        });
+    }
   }
   //Función que llama al servicio para crear restaurantes
   crearRestaurante(): void {
