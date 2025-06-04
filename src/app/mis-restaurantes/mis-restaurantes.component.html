@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="col-12 col-md-6 col-lg-4 mt-5" *ngIf="restaurantes.length<1">
+    <div class="col-12 mt-5" *ngIf="restaurantes.length<1">
       <div class="nuevo-restaurante" (click)="mostrarFormulario = true">
         <i class="bi bi-plus-lg icono"></i>
         <p class="texto">Crear nuevo restaurante</p>
@@ -38,6 +38,7 @@
         <form (ngSubmit)="crearRestaurante()" #form="ngForm">
           <input type="text" name="nombreLocal" [(ngModel)]="formData.nombreLocal" placeholder="Nombre del local"
             required />
+          <label for="img">Imagen Restaurante</label>
           <input type="file" name="img" placeholder="URL de la imagen" required (change)="imgSel($event)" />
           <input type="text" name="precioMedio" [(ngModel)]="formData.precioMedio" placeholder="Precio medio"
             required />

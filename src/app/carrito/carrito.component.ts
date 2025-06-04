@@ -109,6 +109,7 @@ export class CarritoComponent implements OnInit {
               toast: true,
               position: 'top-end'
             });
+            this.ngOnInit()
           },
           error: (err) => {
             console.error('Error al cambiar estado:', err);
