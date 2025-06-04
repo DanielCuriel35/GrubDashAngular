@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Restaurante } from '../restaurantes/restaurante.model';
 import { Producto } from '../producto/producto.model';
 import { Ingrediente } from '../producto/ingrediente.model';
+import { subirImagenCloudinary } from './cloudinary.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,19 +35,36 @@ export class RestauranteService {
     ubicacion: string;
     img?: File | null;
   }): Observable<any> {
-    const formData = new FormData();
-    formData.append('usuario_id', data.usuario_id.toString());
-    formData.append('nombreLocal', data.nombreLocal || '');
-    formData.append('precioMedio', data.precioMedio || '');
-    formData.append('descripcion', data.descripcion || '');
-    formData.append('localidad', data.localidad || '');
-    formData.append('ubicacion', data.ubicacion || '');
+    return new Observable(observer => {
+      const continuar = (imageUrl: string | null) => {
+        const body: any = {
+          usuario_id: data.usuario_id,
+          nombreLocal: data.nombreLocal || '',
+          precioMedio: data.precioMedio || '',
+          descripcion: data.descripcion || '',
+          localidad: data.localidad || '',
+          ubicacion: data.ubicacion || ''
+        };
 
-    if (data.img) {
-      formData.append('img', data.img);
-    }
+        if (imageUrl) {
+          body.img = imageUrl;
+        }
 
-    return this.http.post(`${this.apiUrl}/restaurante`, formData);
+        this.http.post(`${this.apiUrl}/restaurante`, body).subscribe({
+          next: res => observer.next(res),
+          error: err => observer.error(err),
+          complete: () => observer.complete()
+        });
+      };
+
+      if (data.img) {
+        subirImagenCloudinary(data.img, 'restaurante')
+          .then(url => continuar(url))
+          .catch(err => observer.error(err));
+      } else {
+        continuar(null);
+      }
+    });
   }
 
   crearProducto(data: {
@@ -58,22 +76,36 @@ export class RestauranteService {
     img?: File | null;
     ingredientes: Ingrediente[];
   }): Observable<any> {
-    const formData = new FormData();
-    formData.append('restaurante_id', data.restaurante_id);
-    formData.append('nombreProducto', data.nombreProducto);
-    formData.append('precio', data.precio);
-    formData.append('descripcion', data.descripcion);
-    formData.append('tiempoPreparacion', data.tiempoPreparacion);
+    return new Observable(observer => {
+      const continuar = (imageUrl: string | null) => {
+        const body: any = {
+          restaurante_id: data.restaurante_id,
+          nombreProducto: data.nombreProducto,
+          precio: data.precio,
+          descripcion: data.descripcion,
+          tiempoPreparacion: data.tiempoPreparacion,
+          ingredientes: data.ingredientes.map(i => i.id)
+        };
 
-    if (data.img) {
-      formData.append('img', data.img);
-    }
+        if (imageUrl) {
+          body.img = imageUrl;
+        }
 
-    data.ingredientes.forEach((ingrediente, index) => {
-      formData.append(`ingredientes[${index}]`, ingrediente.id.toString());
+        this.http.post(`${this.apiUrl}/producto`, body).subscribe({
+          next: res => observer.next(res),
+          error: err => observer.error(err),
+          complete: () => observer.complete()
+        });
+      };
+
+      if (data.img) {
+        subirImagenCloudinary(data.img, 'producto')
+          .then(url => continuar(url))
+          .catch(err => observer.error(err));
+      } else {
+        continuar(null);
+      }
     });
-
-    return this.http.post(`${this.apiUrl}/producto`, formData);
   }
 
   obtenerIngredientes(): Observable<Ingrediente[]> {
