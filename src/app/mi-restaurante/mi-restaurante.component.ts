@@ -113,7 +113,7 @@ export class MiRestauranteComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al crear producto:', err);
-         //Lanza alert de error
+        //Lanza alert de error
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -175,7 +175,7 @@ export class MiRestauranteComponent implements OnInit {
     const data = sessionStorage.getItem('usuario');
     return data ? JSON.parse(data) : null;
   }
-//Función que vacia el formulario de producto
+  //Función que vacia el formulario de producto
   private limpiarFormularioProducto(): void {
     this.formData = {
       restaurante_id: this.idRestaurante,
@@ -187,5 +187,12 @@ export class MiRestauranteComponent implements OnInit {
       ingredientes: []
     };
     this.imagenSeleccionada = null;
+  }
+
+  imgSel(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.imagenSeleccionada = file;
+    }
   }
 }

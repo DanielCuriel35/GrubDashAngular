@@ -95,9 +95,9 @@ export class MisRestaurantesComponent {
   }
 
   imgSel(event: Event): void {
-  const file = (event.target as HTMLInputElement).files?.[0];
-  if (file) {
-    this.imagenSeleccionada = file;
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.imagenSeleccionada = file;
+    }
   }
-}
 }
