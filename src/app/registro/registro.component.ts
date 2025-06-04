@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
   styleUrl: './registro.component.css'
 })
 export class RegistroComponent {
+  showPassword = false;
   usuario = {
     nombre: '',
     apellido: '',
@@ -72,5 +73,7 @@ export class RegistroComponent {
     return mensaje;
   }
 
-
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 }
