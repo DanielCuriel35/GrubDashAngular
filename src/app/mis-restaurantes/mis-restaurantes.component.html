@@ -39,7 +39,7 @@
           <input type="text" name="nombreLocal" [(ngModel)]="formData.nombreLocal" placeholder="Nombre del local"
             required />
           <label for="img">Imagen Restaurante</label>
-          <input type="file" name="img" [(ngModel)]="imagenSeleccionada" required />
+          <input type="file" name="img" (change)="imgSel($event)" required />
           <input type="text" name="precioMedio" [(ngModel)]="formData.precioMedio" placeholder="Precio medio"
             required />
           <textarea name="descripcion" [(ngModel)]="formData.descripcion" placeholder="Descripción" required></textarea>
