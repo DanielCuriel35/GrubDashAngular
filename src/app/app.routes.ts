@@ -12,11 +12,12 @@ import { PedidosUserComponent } from './pedidos-user/pedidos-user.component';
 import { PedidoRestComponent } from './pedido-rest/pedido-rest.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { MiProductoComponent } from './mi-producto/mi-producto.component';
+import { PedidoService } from './services/pedidos.service';
 
 export const routes: Routes = [
   { path: '', component: InicioComponent },
   { path: 'registro', component: RegistroComponent },
-  { path: 'login', component: LoginComponent},
+  { path: 'login', component: LoginComponent },
   { path: 'producto/:producto_id', component: ProductoComponent },
   { path: 'restaurante/:usuario_id/:nombreLocal', component: RestauranteComponent },
   { path: 'mRestaurante/:usuario_id/:nombreLocal', component: MiRestauranteComponent },
@@ -26,5 +27,5 @@ export const routes: Routes = [
   { path: 'pedidosUser', component: PedidosUserComponent },
   { path: 'pedidosRest', component: PedidoRestComponent },
   { path: 'perfil', component: PerfilComponent },
-  { path: 'mProducto/:id', component: MiProductoComponent }
+  { path: 'mProducto/:id', component: MiProductoComponent },
 ];
