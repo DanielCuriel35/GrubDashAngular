@@ -4,7 +4,9 @@ import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { PedidoService, Producto } from '../services/pedidos.service';
 import Swal from 'sweetalert2';
-
+const STRIPE_PUBLIC_KEY = 'pk_test_51RWM1p4eI3lex67bYmLYSEOVc8WG970t5CJJVF5fQZBx235vFm2dvEy1Ge0TarS2PTKlwtCdv910AvUf3dCLi4tQ00o23oAMWs';
+import { loadStripe } from '@stripe/stripe-js';
+import { StripeService } from '../services/stripe.service';
 @Component({
   selector: 'app-carrito',
   standalone: true,
@@ -19,7 +21,7 @@ export class CarritoComponent implements OnInit {
   total: number = 0;
    //Llamadas para consumir de diferentes librerias
   private pedidosService = inject(PedidoService)
-  private router = inject(Router)
+  private stripe = inject(StripeService)
 
   //Función que se ejecuta al lanzarse el componente
   ngOnInit(): void {
@@ -91,7 +93,26 @@ export class CarritoComponent implements OnInit {
     });
   }
 
-  pago() {
+   async pago() {
+    const stripe = await loadStripe(STRIPE_PUBLIC_KEY);
+
+    this.stripe.crearSesionCheckout(this.productos).subscribe({
+      next: async (res) => {
+        const result = await stripe?.redirectToCheckout({
+          sessionId: res.id
+        });
+
+        if (result?.error) {
+          console.error('Error al redirigir a Stripe:', result.error.message);
+        }
+      },
+      error: (err) => {
+        console.error('Error al crear la sesión de pago:', err);
+      }
+    });
+  }
+
+  /*pago() {
     //Alert de pregunta de confirmación
     Swal.fire({
       title: 'Confirmar pago',
@@ -132,5 +153,5 @@ export class CarritoComponent implements OnInit {
         });
       }
     });
-  }
+  }*/
 }
