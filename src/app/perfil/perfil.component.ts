@@ -28,7 +28,7 @@ export class PerfilComponent implements OnInit {
 
   //Función que se ejecuta al lanzarse el componente
   ngOnInit(): void {
-    this.usuario = this.recuperarUsuario;
+    this.usuario = this.recuperarUsuario();
     this.restaurante = this.usuario.restaurantes;
   }
   //Función que llama al servicio para actualizar un usuario
