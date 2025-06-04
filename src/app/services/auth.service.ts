@@ -49,7 +49,8 @@ export class AuthService {
 
   actualizarRestaurante(restaurante: any, imagen: File | null): Observable<any> {
     return new Observable(observer => {
-      const continuar = (imageUrl: string | null) => {
+
+      const enviarDatos = (imageUrl: string | null) => {
         const formData = new FormData();
         formData.append('_method', 'PUT');
         formData.append('nombreLocal', restaurante.nombreLocal || '');
@@ -61,15 +62,26 @@ export class AuthService {
         if (imageUrl) {
           formData.append('img', imageUrl);
         }
-        if (imagen) {
-          subirImagenCloudinary(imagen, 'restaurante')
-            .then(url => continuar(url))
-            .catch(err => observer.error(err));
-        } else {
-          continuar(null);
-        }
-        return this.http.post(`${this.apiUrl}/restaurantesUpdate/${restaurante.id}`, formData);
+
+        this.http.post(`${this.apiUrl}/restaurantesUpdate/${restaurante.id}`, formData)
+          .subscribe({
+            next: res => {
+              observer.next(res);
+              observer.complete();
+            },
+            error: err => observer.error(err)
+          });
+      };
+
+      if (imagen) {
+        subirImagenCloudinary(imagen, 'restaurante')
+          .then(url => enviarDatos(url))
+          .catch(err => observer.error(err));
+      } else {
+        enviarDatos(null);
       }
-    })
+
+    });
   }
+
 }
