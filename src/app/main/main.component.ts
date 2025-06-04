@@ -52,6 +52,7 @@ export class MainComponent implements OnInit {
       if (result.isConfirmed) {
         //Borra usuario del storage
         sessionStorage.removeItem('usuario');
+        this.ngOnInit()
         //Redirige a inicio
         this.router.navigate(['/']);
         // Lanza alert de confirmación

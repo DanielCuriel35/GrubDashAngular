@@ -47,6 +47,7 @@ export class LoginComponent {
         //Llamada para guardar el usuario en el storage
         const usuario: Usuario = res.user;
         this.authService.guardarUsuario(usuario);
+        this.main.ngOnInit()
         //Redirige a inicio
         this.router.navigate(['/']);
       },
