@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Usuario } from '../usuario.model';
 import { Observable } from 'rxjs';
+import { subirImagenCloudinary } from './cloudinary.service';
 
 @Injectable({
   providedIn: 'root'
@@ -46,18 +47,29 @@ export class AuthService {
     return this.http.put(`${this.apiUrl}/usuario/${usuario.id}`, usuario);
   }
 
-  actualizarRestaurante(restaurante: any, imagen: File|null): Observable<any> {
-    const formData = new FormData();
-    formData.append('_method', 'PUT');
-    formData.append('nombreLocal', restaurante.nombreLocal || '');
-    formData.append('precioMedio', restaurante.precioMedio || '');
-    formData.append('descripcion', restaurante.descripcion || '');
-    formData.append('localidad', restaurante.localidad || '');
-    formData.append('ubicacion', restaurante.ubicacion || '');
-    formData.append('tipoRest', restaurante.tipoRest || '');
-    if (imagen) {
-      formData.append('img', imagen);
-    }
-    return this.http.post(`${this.apiUrl}/restaurantesUpdate/${restaurante.id}`, formData);
+  actualizarRestaurante(restaurante: any, imagen: File | null): Observable<any> {
+    return new Observable(observer => {
+      const continuar = (imageUrl: string | null) => {
+        const formData = new FormData();
+        formData.append('_method', 'PUT');
+        formData.append('nombreLocal', restaurante.nombreLocal || '');
+        formData.append('precioMedio', restaurante.precioMedio || '');
+        formData.append('descripcion', restaurante.descripcion || '');
+        formData.append('localidad', restaurante.localidad || '');
+        formData.append('ubicacion', restaurante.ubicacion || '');
+        formData.append('tipoRest', restaurante.tipoRest || '');
+        if (imagen) {
+          formData.append('img', imagen);
+        }
+        if (imagen) {
+          subirImagenCloudinary(imagen, 'restaurante')
+            .then(url => continuar(url))
+            .catch(err => observer.error(err));
+        } else {
+          continuar(null);
+        }
+        return this.http.post(`${this.apiUrl}/restaurantesUpdate/${restaurante.id}`, formData);
+      }
+    })
   }
 }
