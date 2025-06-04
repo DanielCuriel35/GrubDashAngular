@@ -35,7 +35,7 @@ export class RestauranteService {
     localidad: string;
     ubicacion: string;
     img?: File | null;
-    tipoRest:string;
+    tipoRest: string;
   }): Observable<any> {
     return new Observable(observer => {
       const continuar = (imageUrl: string | null) => {
@@ -45,7 +45,8 @@ export class RestauranteService {
           precioMedio: data.precioMedio || '',
           descripcion: data.descripcion || '',
           localidad: data.localidad || '',
-          ubicacion: data.ubicacion || ''
+          ubicacion: data.ubicacion || '',
+          tipoRest: data.tipoRest ||''
         };
 
         if (imageUrl) {
