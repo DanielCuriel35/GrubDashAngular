@@ -23,7 +23,9 @@ export class RestaurantesComponent implements OnInit {
   //Función que se ejecuta al lanzarse el componente
   ngOnInit(): void {
     this.usuario = this.recuperarUsuario();
+    if (this.usuario) {
     this.localidad = this.usuario.localidad;
+    }
     //Llamo al servicio para obtener los restaurantes de la localidad del usuario
     this.restauranteService.obtenerRestaurantesPorLocalidad(this.localidad).subscribe({
       next: (data) => (this.restaurantes = data, this.restaurantesFiltrados = data),
