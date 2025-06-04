@@ -48,6 +48,8 @@ export class MisRestaurantesComponent {
   }
   //Función que llama al servicio para crear restaurantes
   crearRestaurante(): void {
+    console.log(this.formData);
+
     this.mostrarFormulario = false;
     this.restauranteService.crearRestaurante({
       usuario_id: this.id,
