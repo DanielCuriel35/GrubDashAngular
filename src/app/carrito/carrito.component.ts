@@ -112,46 +112,4 @@ export class CarritoComponent implements OnInit {
     });
   }
 
-  /*pago() {
-    //Alert de pregunta de confirmación
-    Swal.fire({
-      title: 'Confirmar pago',
-      text: '¿Quieres marcar el pedido como pendiente para proceder con el pago?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, confirmar',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        //LLama al servicio para cambiar el estado del pedido
-        this.pedidosService.marcarPedidoComoPendiente(this.usuario.id).subscribe({
-          next: (res: any) => {
-            console.log('Estado cambiado:', res);
-            // Lanza alert de confirmación
-            Swal.fire({
-              icon: 'success',
-              title: 'Pedido actualizado',
-              text: res.message,
-              timer: 1500,
-              showConfirmButton: false,
-              toast: true,
-              position: 'top-end'
-            });
-            //Redirige a pedidos
-            this.router.navigate(['/pedidosUser'])
-          },
-          error: (err) => {
-            console.error('Error al cambiar estado:', err);
-            //Lanza alert de error
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: err.error?.message || 'Error al cambiar estado',
-              confirmButtonText: 'Cerrar'
-            });
-          }
-        });
-      }
-    });
-  }*/
 }
