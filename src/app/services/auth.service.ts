@@ -54,6 +54,7 @@ export class AuthService {
     formData.append('descripcion', restaurante.descripcion || '');
     formData.append('localidad', restaurante.localidad || '');
     formData.append('ubicacion', restaurante.ubicacion || '');
+    formData.append('tipoRest', restaurante.tipoRest || '');
     if (imagen) {
       formData.append('img', imagen);
     }
