@@ -25,6 +25,7 @@ export class MainComponent implements OnInit {
     restaurante: false
   };
   ultimoSegmento !: any;
+  isCollapsed = true;
   //Llamadas para consumir de diferentes librerias
   private router = inject(Router)
   //Función que se ejecuta al lanzarse el componente
