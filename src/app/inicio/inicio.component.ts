@@ -22,6 +22,8 @@ export class InicioComponent implements OnInit {
   //Función que se ejecuta al lanzarse el componente
   ngOnInit(): void {
     this.sessionId = this.route.snapshot.queryParamMap.get('session_id');
+    console.log(this.sessionId);
+
     //Este if evita refrescar y llamar demasiadas veces al metodo
     if (this.sessionId && !localStorage.getItem('pagoProcesado')) {
       this.guardarCarrito();
