@@ -96,7 +96,7 @@ export class CarritoComponent implements OnInit {
    async pago() {
     const stripe = await loadStripe(STRIPE_PUBLIC_KEY);
 
-    this.stripe.crearSesionCheckout(this.productos).subscribe({
+    this.stripe.crearSesionPasarela(this.productos).subscribe({
       next: async (res) => {
         const result = await stripe?.redirectToCheckout({
           sessionId: res.id

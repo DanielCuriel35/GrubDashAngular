@@ -7,11 +7,11 @@ import { inject, Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class StripeService {
-  private apiUrl = 'https://grubdashapi-production.up.railway.app/api/crearSesionCheckout';
+  private apiUrl = 'https://grubdashapi-production.up.railway.app/api/crearSesionPasarela';
 
   private http = inject(HttpClient)
 
-  crearSesionCheckout(productos: any[]) {
+  crearSesionPasarela(productos: any[]) {
     return this.http.post<{ id: string }>(this.apiUrl, { productos });
   }
 }

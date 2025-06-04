@@ -8,13 +8,13 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-inicio',
-  imports: [RouterModule,FormsModule,CommonModule],
+  imports: [RouterModule, FormsModule, CommonModule],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.css'
 })
 export class InicioComponent implements OnInit {
   //Variables que usaré después
-  public usuario:any
+  public usuario: any
   sessionId: string | null = null;
   //Llamadas para consumir de diferentes librerias
   private pedidosService = inject(PedidoService)
@@ -38,32 +38,32 @@ export class InicioComponent implements OnInit {
     const data = sessionStorage.getItem('usuario');
     return data ? JSON.parse(data) : null;
   }
-
-    guardarCarrito() {
-      this.pedidosService.marcarPedidoComoPendiente(this.usuario.id).subscribe({
-        next: (res: any) => {
-          console.log('Estado cambiado:', res);
-          // Lanza alert de confirmación
-          Swal.fire({
-            icon: 'success',
-            title: 'Pedido actualizado',
-            text: res.message,
-            timer: 1500,
-            showConfirmButton: false,
-            toast: true,
-            position: 'top-end'
-          });
-        },
-        error: (err) => {
-          console.error('Error al cambiar estado:', err);
-          //Lanza alert de error
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: err.error?.message || 'Error al cambiar estado',
-            confirmButtonText: 'Cerrar'
-          });
-        }
-      });
-    }
+  //Función que guarda el pedido que habia en el carrito
+  guardarCarrito() {
+    this.pedidosService.marcarPedidoComoPendiente(this.usuario.id).subscribe({
+      next: (res: any) => {
+        console.log('Estado cambiado:', res);
+        // Lanza alert de confirmación
+        Swal.fire({
+          icon: 'success',
+          title: 'Pedido actualizado',
+          text: res.message,
+          timer: 1500,
+          showConfirmButton: false,
+          toast: true,
+          position: 'top-end'
+        });
+      },
+      error: (err) => {
+        console.error('Error al cambiar estado:', err);
+        //Lanza alert de error
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.error?.message || 'Error al cambiar estado',
+          confirmButtonText: 'Cerrar'
+        });
+      }
+    });
+  }
 }
