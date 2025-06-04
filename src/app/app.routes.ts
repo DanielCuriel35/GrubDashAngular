@@ -16,6 +16,7 @@ import { PedidoService } from './services/pedidos.service';
 
 export const routes: Routes = [
   { path: '', component: InicioComponent },
+  { path: 'inicio', component: InicioComponent },
   { path: 'registro', component: RegistroComponent },
   { path: 'login', component: LoginComponent },
   { path: 'producto/:producto_id', component: ProductoComponent },

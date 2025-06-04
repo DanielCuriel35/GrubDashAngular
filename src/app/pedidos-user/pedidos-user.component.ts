@@ -15,22 +15,14 @@ export class PedidosUserComponent implements OnInit {
   pedidos: Pedido[] = [];
   error: string = '';
   usuario: any;
-  sessionId: string | null = null;
 
   //Llamadas para consumir de diferentes librerias
   private pedidosService = inject(PedidoService)
-  private route = inject(ActivatedRoute)
 
   //Función que se ejecuta al lanzarse el componente
   ngOnInit(): void {
     this.usuario = this.recuperarUsuario()
-    this.sessionId = this.route.snapshot.queryParamMap.get('session_id');
-    console.log('Valor de session_id:', this.sessionId);
-    //Este if evita refrescar y llamar demasiadas veces al metodo
-    if (this.sessionId && !localStorage.getItem('pagoProcesado')) {
-      this.guardarCarrito();
-      localStorage.setItem('pagoProcesado', 'true');
-    }
+
     if (this.usuario != undefined) {
       //LLamo al servicio para obtener los pedidos de un usuario atraves de su id
       this.pedidosService.obtenerPedidosUser(this.usuario.id).subscribe({
