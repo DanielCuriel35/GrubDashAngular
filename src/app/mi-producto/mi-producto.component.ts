@@ -16,8 +16,8 @@ import Swal from 'sweetalert2';
 export class MiProductoComponent implements OnInit {
   //Variables que usaré después
   producto!: Producto;
-  imagen!: File;
-   //Llamadas para consumir de diferentes librerias
+  imagenSeleccionada!: File;
+  //Llamadas para consumir de diferentes librerias
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private productoService = inject(ProductoService);
@@ -49,7 +49,7 @@ export class MiProductoComponent implements OnInit {
   }
   //Función que llama al servicio para actualizar un producto
   actualizarProducto() {
-    this.productoService.actualizarProducto(this.producto, this.imagen).subscribe({
+    this.productoService.actualizarProducto(this.producto, this.imagenSeleccionada).subscribe({
       next: () => {
         // Lanza alert de confirmación
         Swal.fire({
@@ -100,5 +100,11 @@ export class MiProductoComponent implements OnInit {
         });
       }
     });
+  }
+  imgSel(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.imagenSeleccionada = file;
+    }
   }
 }
