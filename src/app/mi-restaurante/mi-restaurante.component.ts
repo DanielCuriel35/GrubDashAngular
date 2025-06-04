@@ -112,6 +112,8 @@ export class MiRestauranteComponent implements OnInit {
         this.limpiarFormularioProducto();
       },
       error: (err) => {
+        console.log(this.imagenSeleccionada);
+
         console.error('Error al crear producto:', err);
         //Lanza alert de error
         Swal.fire({
