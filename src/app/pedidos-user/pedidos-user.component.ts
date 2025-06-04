@@ -25,9 +25,11 @@ export class PedidosUserComponent implements OnInit {
   ngOnInit(): void {
     this.usuario = this.recuperarUsuario()
     this.sessionId = this.route.snapshot.queryParamMap.get('session_id');
-
-    if (this.sessionId) {
-      this.guardarCarrito()
+    console.log('Valor de session_id:', this.sessionId);
+    //Este if evita refrescar y llamar demasiadas veces al metodo
+    if (this.sessionId && !localStorage.getItem('pagoProcesado')) {
+      this.guardarCarrito();
+      localStorage.setItem('pagoProcesado', 'true');
     }
     if (this.usuario != undefined) {
       //LLamo al servicio para obtener los pedidos de un usuario atraves de su id
