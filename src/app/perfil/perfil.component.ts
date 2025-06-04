@@ -28,7 +28,7 @@ export class PerfilComponent implements OnInit {
 
   //Función que se ejecuta al lanzarse el componente
   ngOnInit(): void {
-    this.usuario = this.authService.obtenerUsuario();
+    this.usuario = this.recuperarUsuario;
     this.restaurante = this.usuario.restaurantes;
   }
   //Función que llama al servicio para actualizar un usuario
@@ -94,5 +94,16 @@ export class PerfilComponent implements OnInit {
       }
     });
   }
+  //Funcion que sirve para recuperar el usuario del session storage
+  recuperarUsuario(): any | null {
+    const data = sessionStorage.getItem('usuario');
+    return data ? JSON.parse(data) : null;
+  }
 
+  imgSel(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.imagenSeleccionada = file;
+    }
+  }
 }

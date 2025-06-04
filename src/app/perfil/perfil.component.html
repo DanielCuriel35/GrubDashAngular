@@ -52,7 +52,7 @@
 
       <div class="mb-3">
         <label class="form-label">Imagen</label>
-        <input type="file" class="form-control" name="img" [disabled]="!modoEdicion">
+        <input type="file" class="form-control" name="img" (change)="imgSel($event)" [disabled]="!modoEdicion">
       </div>
 
       <div class="mb-3">
@@ -64,7 +64,7 @@
         <label class="form-label">Descripción</label>
         <textarea class="form-control" [(ngModel)]="restaurante.descripcion" name="descripcion" [readonly]="!modoEdicion"></textarea>
       </div>
-      
+
       <div class="mb-3" *ngIf="modoEdicion">
         <label class="form-label fw-bold">Tipo de Restaurante</label>
         <div class="form-check" *ngFor="let tipo of tiposRestaurante">
