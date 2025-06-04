@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { PedidoService, Producto } from '../services/pedidos.service';
 import Swal from 'sweetalert2';
@@ -18,6 +18,7 @@ export class CarritoComponent implements OnInit {
   total: number = 0;
 
   constructor(private pedidosService: PedidoService) {}
+  private router = inject(Router)
 
   ngOnInit(): void {
     this.usuario = this.recuperarUsuario();
@@ -109,7 +110,7 @@ export class CarritoComponent implements OnInit {
               toast: true,
               position: 'top-end'
             });
-            this.ngOnInit()
+            this.router.navigate(['/pedidosUser'])
           },
           error: (err) => {
             console.error('Error al cambiar estado:', err);
