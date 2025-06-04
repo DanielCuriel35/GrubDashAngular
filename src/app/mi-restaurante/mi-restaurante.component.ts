@@ -152,7 +152,7 @@ export class MiRestauranteComponent implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'No se pudo crear el ingrediente'
+          text: 'No se pudo crear el ingrediente o ya existe en la base de datos'
         });
       }
     });
