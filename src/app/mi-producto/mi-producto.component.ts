@@ -36,7 +36,11 @@ export class MiProductoComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando producto', err);
-        alert('Error al cargar producto');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo cargar los productos'
+        });
       }
     });
   }
@@ -44,12 +48,24 @@ export class MiProductoComponent implements OnInit {
   actualizarProducto() {
     this.productoService.actualizarProducto(this.producto, this.imagen).subscribe({
       next: () => {
-        alert('Producto actualizado con éxito');
+        Swal.fire({
+          icon: 'success',
+          title: 'Producto modificado',
+          text: 'El producto fue modificado exitosamente',
+          timer: 1500,
+          showConfirmButton: false,
+          toast: true,
+          position: 'top-end'
+        });
         this.router.navigate(['/mRestaurantes']);
       },
       error: (err) => {
         console.error('Error actualizando producto', err);
-        alert('Error al actualizar producto');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo actualizar el producto'
+        });
       }
     });
   }
@@ -61,7 +77,7 @@ export class MiProductoComponent implements OnInit {
     }
   }
 
-   borrarProducto(id: number) {
+  borrarProducto(id: number) {
     Swal.fire({
       title: '¿Estás seguro?',
       text: 'No podrás revertir esta acción.',
