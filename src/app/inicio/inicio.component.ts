@@ -20,17 +20,15 @@ export class InicioComponent implements OnInit {
   private pedidosService = inject(PedidoService)
   private route = inject(ActivatedRoute)
   //Función que se ejecuta al lanzarse el componente
-
   ngOnInit(): void {
-    this.route.queryParamMap.subscribe((params) => {
-      this.sessionId = params.get('session_id');
-      //Este if evita refrescar y llamar demasiadas veces al metodo
-      if (this.sessionId && !localStorage.getItem('pagoProcesado')) {
-        this.guardarCarrito();
-        localStorage.setItem('pagoProcesado', 'true');
-      }
-    })
+    this.sessionId = this.route.snapshot.queryParamMap.get('session_id');
+    console.log(this.sessionId);
 
+    //Este if evita refrescar y llamar demasiadas veces al metodo
+    if (this.sessionId && !localStorage.getItem('pagoProcesado')) {
+      this.guardarCarrito();
+      localStorage.setItem('pagoProcesado', 'true');
+    }
     if (sessionStorage.getItem('usuario')) {
       this.usuario = this.recuperarUsuario();
     }
