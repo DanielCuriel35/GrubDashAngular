@@ -34,7 +34,7 @@
     </div>
   </div>
 </div>
-<div *ngIf="usuario==undefined" class="d-flex flex-column justify-content-center align-items-center vh-100">
+<div *ngIf="usuario.id==undefined" class="d-flex flex-column justify-content-center align-items-center vh-100">
   <p class="fs-4 mb-3">No has iniciado sesión.</p>
   <a class="btn btn-primary btn-lg" routerLink="/login">Iniciar sesión</a>
 </div>
