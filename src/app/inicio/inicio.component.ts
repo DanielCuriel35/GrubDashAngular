@@ -41,6 +41,7 @@ export class InicioComponent implements OnInit {
   }
   //Función que guarda el pedido que habia en el carrito
   guardarCarrito() {
+    console.log('Entra a guardar carrito');
     this.pedidosService.marcarPedidoComoPendiente(this.usuario.id).subscribe({
       next: (res: any) => {
         console.log('Estado cambiado:', res);
