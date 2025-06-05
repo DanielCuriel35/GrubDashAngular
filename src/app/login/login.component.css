@@ -101,24 +101,35 @@ body {
 
 .contraseña {
   position: relative;
-  display: inline-block;
   width: 100%;
+  margin-bottom: 1rem;
 }
 
 .contraseña > input {
-  padding-right: 80px;
+  width: 100%;
+  padding-right: 3rem;
+  height: 44px;
+  box-sizing: border-box;
 }
 
 .contraseña > button {
   position: absolute;
-  right: 10px;
   top: 50%;
+  right: 10px;
   transform: translateY(-50%);
   background: none;
   border: none;
-  cursor: pointer;
+  padding: 0;
+  height: 44px;
+  width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+.contraseña > button i {
+  font-size: 1.2rem;
+}
 .imagen {
   max-width: 200px;
   max-height: 200px;
