@@ -30,9 +30,7 @@ export class InicioComponent implements OnInit {
       this.guardarCarrito();
       localStorage.setItem('pagoProcesado', 'true');
     }
-    if (sessionStorage.getItem('usuario')) {
-      this.usuario = this.recuperarUsuario();
-    }
+    this.usuario = this.recuperarUsuario();
 
   }
   //Funcion que sirve para recuperar el usuario del session storage
