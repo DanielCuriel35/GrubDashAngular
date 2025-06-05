@@ -94,6 +94,7 @@ export class CarritoComponent implements OnInit {
   }
 
    async pago() {
+    localStorage.setItem('pagoProcesado', 'false');
     const stripe = await loadStripe(STRIPE_PUBLIC_KEY);
 
     this.stripe.crearSesionPasarela(this.productos).subscribe({
