@@ -4,23 +4,29 @@
     <p class="title">Registrate aquí</p>
     <form class="form" (ngSubmit)="onSubmit()" #formulario="ngForm">
       <input type="text" class="input" placeholder="Nombre" [(ngModel)]="usuario.nombre" name="nombre" required />
-      <input type="text" class="input" placeholder="Apellidos" [(ngModel)]="usuario.apellido" name="apellido" required />
-      <input type="date" class="input" placeholder="Fecha de nacimiento" [(ngModel)]="usuario.fecha_nac" name="fecha_nac" required />
-      <input type="text" class="input" placeholder="Nombre de usuario" [(ngModel)]="usuario.username" name="user" required />
-      <input type="text" class="input" placeholder="Localidad" [(ngModel)]="usuario.localidad" name="localidad" required />
-      <input type="text" class="input" placeholder="Calle/N/Piso/Letra" [(ngModel)]="usuario.direccion" name="direccion" required />
+      <input type="text" class="input" placeholder="Apellidos" [(ngModel)]="usuario.apellido" name="apellido"
+        required />
+      <input type="date" class="input" placeholder="Fecha de nacimiento" [(ngModel)]="usuario.fecha_nac"
+        name="fecha_nac" required />
+      <input type="text" class="input" placeholder="Nombre de usuario" [(ngModel)]="usuario.username" name="user"
+        required />
+      <input type="text" class="input" placeholder="Localidad" [(ngModel)]="usuario.localidad" name="localidad"
+        required />
+      <input type="text" class="input" placeholder="Calle/N/Piso/Letra" [(ngModel)]="usuario.direccion" name="direccion"
+        required />
       <input type="email" class="input" placeholder="Email" [(ngModel)]="usuario.email" name="email" required />
 
-      <div class="contraseña">
-        <input [type]="verPassword ? 'text' : 'password'" class="input" placeholder="Password" [(ngModel)]="usuario.password"
-          name="password" required />
-        <button type="button" (click)="cambiarVisibilidadPassword()">
+      <div class="contraseña d-flex align-items-center">
+        <input [type]="verPassword ? 'text' : 'password'" class="form-control rounded-end-0" placeholder="Password"
+          [(ngModel)]="usuario.password" name="password" required />
+        <button type="button" class="btn btn-outline-secondary rounded-start-0" (click)="cambiarVisibilidadPassword()">
           <i class="bi" [class.bi-eye]="!verPassword" [class.bi-eye-slash]="verPassword"></i>
         </button>
       </div>
 
       <div class="text-start mt-1" style="margin-left: 5px;">
-        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="right" title="Contraseña de mínimo 10 caracteres, 1 mayúscula, 1 minúscula y 1 número">
+        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="right"
+          title="Contraseña de mínimo 10 caracteres, 1 mayúscula, 1 minúscula y 1 número">
           <i class="bi bi-info-circle"></i>
         </button>
       </div>
