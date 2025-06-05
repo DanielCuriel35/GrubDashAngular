@@ -5,7 +5,7 @@
         <img [src]="producto.img" alt="Producto" class="img-fluid" style="max-width: 120px;">
         <div class="ms-3 flex-grow-1">
           <h5 class="fw-bold">{{ producto.nombre }}</h5>
-          <p class="mb-1">Precio: ${{ producto.precio_unitario }}</p>
+          <p class="mb-1">Precio: {{ producto.precio_unitario }}€</p>
           <p class="mb-1">Cantidad: {{ producto.cantidad }}</p>
         </div>
         <button class="btn btn-danger ms-3" (click)="eliminarProducto(producto.id)">Eliminar</button>
@@ -13,7 +13,7 @@
     </div>
     <div class="col-md-8">
       <div class="card p-4">
-        <h4 class="fw-bold">Total: ${{ total.toFixed(2) }}</h4>
+        <h4 class="fw-bold">Total: {{ total.toFixed(2) }}€</h4>
         <button class="btn btn-success w-100 mt-3 fs-5" (click)="pago()">Proceder al Pago</button>
       </div>
     </div>
