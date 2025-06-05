@@ -67,6 +67,7 @@ export class PerfilComponent implements OnInit {
   }
   //Función que llama al servicio para modificar el restaurante del usuario
   actualizarRestaurante(): void {
+    console.log('Se ejecutó actualizarRestaurante()');
     this.authService.actualizarRestaurante(this.restaurante, this.imagenSeleccionada).subscribe({
       next: (res) => {
         // Lanza alert de confirmación
