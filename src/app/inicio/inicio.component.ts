@@ -16,21 +16,21 @@ export class InicioComponent implements OnInit {
   //Variables que usaré después
   public usuario: any
   sessionId: string | null = null;
-  pagoProcesado : string | null = null;
+  pagoProcesado: string | null = null;
   //Llamadas para consumir de diferentes librerias
   private pedidosService = inject(PedidoService)
   private route = inject(ActivatedRoute)
   //Función que se ejecuta al lanzarse el componente
   ngOnInit(): void {
+    this.usuario = this.recuperarUsuario();
     this.sessionId = this.route.snapshot.queryParamMap.get('session_id');
     console.log(this.sessionId);
     this.pagoProcesado = localStorage.getItem('pagoProcesado')
     //Este if evita refrescar y llamar demasiadas veces al metodo
-    if (this.sessionId !=null && this.pagoProcesado=='false') {
+    if (this.sessionId != null && this.pagoProcesado == 'false') {
       this.guardarCarrito();
       localStorage.setItem('pagoProcesado', 'true');
     }
-    this.usuario = this.recuperarUsuario();
 
   }
   //Funcion que sirve para recuperar el usuario del session storage
