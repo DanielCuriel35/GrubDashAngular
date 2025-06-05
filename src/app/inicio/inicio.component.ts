@@ -16,6 +16,7 @@ export class InicioComponent implements OnInit {
   //Variables que usaré después
   public usuario: any
   sessionId: string | null = null;
+  pagoProcesado : string | null = null;
   //Llamadas para consumir de diferentes librerias
   private pedidosService = inject(PedidoService)
   private route = inject(ActivatedRoute)
@@ -23,9 +24,9 @@ export class InicioComponent implements OnInit {
   ngOnInit(): void {
     this.sessionId = this.route.snapshot.queryParamMap.get('session_id');
     console.log(this.sessionId);
-
+    this.pagoProcesado = localStorage.getItem('pagoProcesado')
     //Este if evita refrescar y llamar demasiadas veces al metodo
-    if (this.sessionId && !localStorage.getItem('pagoProcesado')) {
+    if (this.sessionId !=null && this.pagoProcesado=='false') {
       this.guardarCarrito();
       localStorage.setItem('pagoProcesado', 'true');
     }
