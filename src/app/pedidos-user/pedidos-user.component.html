@@ -1,4 +1,4 @@
-<div class="container"  *ngIf="usuario!=undefined">
+<div class="container"  *ngIf="usuario!=undefined || !usuario.restaurantes">
   <div class="row">
     <div *ngFor="let pedido of pedidos" class="col-12 col-md-6 mt-4">
       <div class="card shadow mb-4">
