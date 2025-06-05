@@ -68,7 +68,7 @@ export class PerfilComponent implements OnInit {
   //Función que llama al servicio para modificar el restaurante del usuario
   actualizarRestaurante(): void {
     console.log('Se ejecutó actualizarRestaurante()');
-    /*this.authService.actualizarRestaurante(this.restaurante, this.imagenSeleccionada).subscribe({
+    this.authService.actualizarRestaurante(this.restaurante, this.imagenSeleccionada).subscribe({
       next: (res) => {
         // Lanza alert de confirmación
         Swal.fire({
@@ -93,7 +93,7 @@ export class PerfilComponent implements OnInit {
           confirmButtonText: 'Cerrar'
         });
       }
-    });*/
+    });
   }
   //Funcion que sirve para recuperar el usuario del session storage
   recuperarUsuario(): any | null {
