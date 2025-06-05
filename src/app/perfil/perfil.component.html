@@ -44,7 +44,7 @@
 
    <div *ngIf="usuario.restaurantes" class="card p-4 mt-4">
     <h4 class="mb-3">Editar datos del restaurante</h4>
-    <form (ngSubmit)="actualizarRestaurante()">
+    <form>
       <div class="mb-3">
         <label class="form-label">Nombre del Local</label>
         <input class="form-control" [(ngModel)]="restaurante.nombreLocal" name="nombreLocal" [readonly]="!modoEdicion">
@@ -88,7 +88,7 @@
         <input class="form-control" [(ngModel)]="restaurante.localidad" name="localidadRest" [readonly]="!modoEdicion">
       </div>
 
-      <button type="submit" class="btn btn-success" *ngIf="modoEdicion">Guardar restaurante</button>
+      <button type="button" (click)="actualizarRestaurante()" class="btn btn-success" *ngIf="modoEdicion">Guardar restaurante</button>
     </form>
   </div>
 </div>
