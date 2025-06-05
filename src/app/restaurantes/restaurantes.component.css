@@ -13,3 +13,22 @@ body{
   height: 200px;
   width: auto;
 }
+.selectMorado {
+  background-color: #f8f0ff;
+  border: 2px solid #a66dd4;
+  color: #4b206b;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.selectMorado:focus {
+  border-color: #7d3fc6;
+  box-shadow: 0 0 0 0.2rem rgba(125, 63, 198, 0.25);
+  outline: none;
+}
+
+.selectMorado option {
+  background-color: #ffffff;
+  color: #4b206b;
+}
